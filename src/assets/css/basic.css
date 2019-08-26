@@ -1,0 +1,25 @@
+body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4, h5, h6, i, b, textarea, button, input, select, figure, figcaption {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+  text-decoration: none;
+  border: none;
+  font-family: "Microsoft Yahei",sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased; }
+  body:focus, div:focus, span:focus, header:focus, footer:focus, nav:focus, section:focus, aside:focus, article:focus, ul:focus, dl:focus, dt:focus, dd:focus, li:focus, a:focus, p:focus, h1:focus, h2:focus, h3:focus, h4:focus, h5:focus, h6:focus, i:focus, b:focus, textarea:focus, button:focus, input:focus, select:focus, figure:focus, figcaption:focus {
+    outline: none; }
+
+body {
+  background-color: #F7F7F7; }
+
+a {
+  color: #212121;
+  text-decoration: none; }
+
+a:hover {
+  text-decoration: none;
+  color: #212121; }
+
+/*# sourceMappingURL=basic.css.map */
