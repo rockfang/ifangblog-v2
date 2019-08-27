@@ -1,7 +1,5 @@
 <template>
   <div v-cloak>
-    <!--<v-headNavBar  :path="this.$route.path"></v-headNavBar>-->
-
     <div class="content-about">
       <div class="main" :style="mainHeight">
 
@@ -33,63 +31,27 @@
         </ul>
       </div>
     </div>
-    <v-bottomBar v-if="ready"></v-bottomBar>
+    <v-bottomBar></v-bottomBar>
 
   </div>
 
 </template>
 
 <script>
-  import HeadNavBar from '../public/HeadNavBar.vue'
   import ArticelTagBar from '../public/ArticelTagBar.vue'
   import BottomBar from '../public/BottomBar.vue'
   import '../../../assets/css/basic.scss';
-  import Config from '../../../module/config.js'
-
 
   export default {
     data() {
       return {
-        TAGS_URL: Config.BASE_WEB_URL + 'tags',
-        tags: [],
-        ready: false,
         mainHeight: {
         'min-height': window.innerHeight - 350 + 'px'
       },
       }
     }, components: {
-      'v-headNavBar': HeadNavBar,
       'v-articleTagBar': ArticelTagBar,
       'v-bottomBar': BottomBar,
-    }, methods: {
-      initTagData: function () {
-        this.$http.get(this.TAGS_URL).then(response => {
-          if (response.body.success) {
-            this.tags = response.body.tags;
-            this.ready = true;//处理底部栏闪屏出现
-          }
-        }, response => {
-
-        });
-      },tagArticleList: function(name) {
-        this.$router.push({path:'/tagarticle/' + name});
-      },
-      getRandomType: function () {
-        let randomNum = Math.ceil(Math.random() * 4);
-        let type = "";
-        if(randomNum == 0) {
-          type = 'success';
-        } else if(randomNum == 1) {
-          type = 'info';
-        } else if(randomNum == 2) {
-          type = 'warning';
-        } else if(randomNum == 3){
-          type = 'danger';
-        }
-        return type;
-      }
-    }, mounted() {
-      this.initTagData();
     }
   }
 </script>

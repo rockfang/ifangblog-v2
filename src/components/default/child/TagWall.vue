@@ -1,7 +1,5 @@
 <template>
   <div v-cloak>
-    <!--<v-headNavBar  :path="this.$route.path"></v-headNavBar>-->
-
     <div class="content">
       <div class="main" :style="mainHeight">
 
@@ -20,45 +18,34 @@
         </div>
       </div>
     </div>
-    <v-bottomBar v-if="ready"></v-bottomBar>
+    <v-bottomBar v-if="tags"></v-bottomBar>
 
   </div>
 
 </template>
 
 <script>
-  import HeadNavBar from '../public/HeadNavBar.vue'
   import ArticelTagBar from '../public/ArticelTagBar.vue'
   import BottomBar from '../public/BottomBar.vue'
   import '../../../assets/css/basic.scss';
-  import Config from '../../../module/config.js'
-
 
   export default {
     data() {
       return {
-        TAGS_URL: Config.BASE_WEB_URL + 'tags',
-        tags: [],
-        ready: false,
         mainHeight: {
         'min-height': window.innerHeight - 350 + 'px'
       },
       }
-    }, components: {
-      'v-headNavBar': HeadNavBar,
+    }, computed: {
+      tags() {
+        return this.$store.getters.wallTags;
+      }
+    },
+    components: {
       'v-articleTagBar': ArticelTagBar,
       'v-bottomBar': BottomBar,
     }, methods: {
-      initTagData: function () {
-        this.$http.get(this.TAGS_URL).then(response => {
-          if (response.body.success) {
-            this.tags = response.body.tags;
-            this.ready = true;//处理底部栏闪屏出现
-          }
-        }, response => {
-
-        });
-      },tagArticleList: function(name) {
+      tagArticleList: function(name) {
         this.$router.push({path:'/tagarticle/' + name});
       },
       getRandomType: function () {
@@ -75,8 +62,8 @@
         }
         return type;
       }
-    }, mounted() {
-      this.initTagData();
+    }, created() {
+      this.$store.dispatch("initTagData");
     }
   }
 </script>

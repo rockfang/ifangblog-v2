@@ -1,9 +1,8 @@
 <template>
   <div v-cloak>
     <div class="content">
-      <div class="main-home">
-
-        <div class="article-item" v-for="item in articles">
+      <div class="main-home" :style="mainHeight">
+        <div class="article-item" v-for="item in homeArticles">
           <div class="article-time-head">
             <img src="../../../assets/images/calenter.png" alt="">
             <span>{{item.createTime}}</span>
@@ -22,16 +21,16 @@
           <el-pagination
             small
             layout="prev, pager, next,jumper"
-            hide-on-single-page="true"
+            :hide-on-single-page="Boolean(true)"
             @current-change="currentChange"
             :page-size="pageSize"
-            :page-count="pageCount">
+            :page-count="homePageCount">
           </el-pagination>
 
         </template>
       </div>
     </div>
-    <v-bottomBar v-if="ready"></v-bottomBar>
+    <v-bottomBar v-if="homePageCount"></v-bottomBar>
 
   </div>
 
@@ -41,48 +40,43 @@
   import ArticelTagBar from '../public/ArticelTagBar.vue'
   import BottomBar from '../public/BottomBar.vue'
   import '../../../assets/css/basic.scss';
-  import Config from '../../../module/config.js'
-
+  import {mapGetters} from "vuex"
 
   export default {
     data() {
       return {
         pageSize: 2,//每页显示条数，前端固定
-
-        ARTICLE_INDEX_URL: Config.BASE_WEB_URL,
-        articles: [],
-        ready: false,
-        defaultMore: true
+        mainHeight: {
+          'min-height': window.innerHeight - 265 + 'px'
+        },
       }
-    }, components: {
+    },computed: {
+      ...mapGetters([
+        "homePageCount",
+        "homeArticles",
+      ]),
+    },components: {
       'v-articleTagBar': ArticelTagBar,
       'v-bottomBar': BottomBar,
     }, methods: {
-      requestArticleIndex: function () {
-        this.$http.get(this.ARTICLE_INDEX_URL).then(response => {
-          if (response.body.success) {
-            this.articles = response.body.articles;
-            console.log(this.articles);
-            this.ready = true;//处理底部栏闪屏出现
-          }
-        }, response => {
-
+      currentChange: function (page) {
+        this.requestArticleIndex(page);
+      },
+      requestArticleIndex: function (page) {
+        this.$store.dispatch("requestHomeArticles", {
+          pageSize: this.pageSize,
+          page: page,
         });
       }, goArticle: function (id) {
         this.$router.push({path: '/article', query: {id: id}});
       }
-    }, mounted() {
-      this.requestArticleIndex();
+    },created() {
+      this.requestArticleIndex(1);
     }
   }
 </script>
 
 <style lang="scss">
-  [v-cloak] {
-    display: none;
-
-  }
-
   .content {
     margin: 65px 20px 20px 20px;
 

@@ -23,7 +23,7 @@
           <el-pagination
             small
             layout="prev, pager, next,jumper"
-            hide-on-single-page="true"
+            :hide-on-single-page="Boolean(true)"
             @current-change="currentChange"
             :page-size="pageSize"
             :page-count="pageCount">
@@ -43,6 +43,7 @@
   import ArticelTagBar from '../public/ArticelTagBar.vue'
   import BottomBar from '../public/BottomBar.vue'
   import '../../../assets/css/basic.scss';
+  import {mapGetters} from "vuex"
 
   import 'mavon-editor/dist/markdown/github-markdown.min.css'
   import 'mavon-editor/dist/highlightjs/styles/gruvbox-dark.min.css'
@@ -63,17 +64,12 @@
         },
       }
     }, computed: {
-      taginfo() {
-        return this.$store.getters.taginfo;
-      },
-      pageCount() {
-        return this.$store.getters.pageCount;
-      },
-      articles() {
-        return this.$store.getters.articles;
-      }
+      ...mapGetters([
+        "taginfo",
+        "pageCount",
+        "articles",
+      ]),
     },
-
     components: {
       'v-articleTagBar': ArticelTagBar,
       'v-bottomBar': BottomBar,
@@ -83,7 +79,7 @@
       }, requestTagArticles: function (page) {
         this.$store.dispatch("requestTagArticles", {
           pageSize: this.pageSize,
-          page: page,//每页显示条数，前端固定
+          page: page,
           tagName: this.$route.params.name
         });
       },
@@ -98,11 +94,6 @@
 </script>
 
 <style lang="scss" scoped>
-  [v-cloak] {
-    display: none;
-
-  }
-
   .content {
     margin: 65px 20px 20px 20px;
     text-align: center;
