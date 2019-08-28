@@ -1,26 +1,25 @@
 <template>
   <div class="main">
-    <HeadNavBar  :path="this.$route.path"></HeadNavBar>
-    <transition name="slide" mode="out-in" >
-    <router-view></router-view>
+    <HeadNavBar :path="this.$route.path"></HeadNavBar>
+    <transition name="slide" mode="out-in">
+      <router-view></router-view>
     </transition>
   </div>
 </template>
 
 <script>
+  import HeadNavBar from "./public/HeadNavBar"
 
   export default {
     components: {
-      HeadNavBar:resolve => {
-        require(['./public/HeadNavBar.vue'], resolve)
-      }
+      HeadNavBar
     }
   }
 </script>
 
 <style scoped>
   /*处理动画导致header晃动问题*/
-  .main{
+  .main {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -34,6 +33,7 @@
   .slide-enter-active {
     animation: slide-in 200ms ease-out forwards;
   }
+
   .slide-leave-active {
     animation: slide-out 200ms ease-out forwards;
   }
@@ -49,6 +49,7 @@
     }
 
   }
+
   @keyframes slide-out {
     from {
       transform: translateY(0);

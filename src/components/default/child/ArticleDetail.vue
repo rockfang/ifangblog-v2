@@ -1,19 +1,17 @@
 <template>
     <div v-cloak>
-      <!--<v-headNavBar></v-headNavBar>-->
       <div class="content-detail">
         <!-- 添加空的markdown-body 类名目的是使得引用到mavonEditor中的样式-->
         <div class="article markdown-body" :style="articleHeight" v-html="article" >
 
         </div>
       </div>
-      <v-bottomBar v-if="ready"></v-bottomBar>
+      <v-bottomBar v-if="article"></v-bottomBar>
     </div>
 </template>
 
 <script>
 
-  import HeadNavBar from '../public/HeadNavBar.vue'
   import BottomBar from '../public/BottomBar.vue'
   import '../../../assets/css/basic.scss';
   import 'mavon-editor/dist/markdown/github-markdown.min.css'
@@ -27,51 +25,24 @@
    */
 
 
-  import Config from '../../../module/config.js'
-
   export default {
     name: "ArticleDetail",
     data:function() {
       return {
-        article: '',
-        ARTICLE_INDEX_URL: Config.BASE_WEB_URL + 'articleDetail',
-        ready: false,
         articleHeight: {
           'min-height': window.innerHeight - 360 + 'px'
         },
       }
     },
     computed: {
-
+      article() {
+        return this.$store.getters.detailArticle
+      }
     },
     components: {
-      'v-headNavBar': HeadNavBar,
       'v-bottomBar': BottomBar,
-    },methods:  {
-      init: function () {
-
-        // this.$http.get('./article.json').then(response => {
-        //   if (response.body.success) {
-        //     this.article = response.body.article.renderText;
-        //     this.ready = true;
-        //
-        //   }
-        // },response => {
-        //
-        // });
-
-        this.$http.get(this.ARTICLE_INDEX_URL +"?id=" + this.$route.query.id).then(response => {
-          if (response.body.success) {
-            this.article = response.body.article.renderText;
-            this.ready = true;
-
-          }
-        },response => {
-
-        });
-      }
-    },mounted() {
-      this.init();
+    },created() {
+      this.$store.dispatch("initArticleDetail",this.$route.query.id);
     }
   }
 </script>
