@@ -85,7 +85,7 @@
     computed: {
         ...mapGetters([
           "pTypes",
-          "cTypeInfo"
+          "cTypeInfo",
         ])
     },
     methods: {

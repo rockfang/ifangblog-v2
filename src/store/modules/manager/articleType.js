@@ -4,7 +4,7 @@ import msgTool from '../../../module/msgTool.js'
 const state = {
   articleTypeTableData: [],
 
-  //编辑页用
+  //编辑,添加 页用
   pTypes:[],
   cTypeInfo: {
     title:"",
@@ -82,7 +82,7 @@ const actions = {
     });
   },
 
-  getPTypes: ({commit})=> {
+  getPTypes: ({commit,dispatch})=> {
     Vue.http.get("admin/articletype/getPtypes").then(response => {
       if (response.body.success) {
         let ptypes = response.body.ptypes;
@@ -110,8 +110,28 @@ const actions = {
     });
 
   },
+  doAddType: ({state,dispatch},vm)=> {
+    if (!state.cTypeInfo.title) {
+      notifyTool.normalTips(vm,'','请填写分类名称');
+      return;
+    }
+    if (!state.cTypeInfo.parentType) {
+      notifyTool.normalTips(vm,'','请选择上层分类');
+      return;
+    }
 
-  commitArticleTypeInfo: ({state},vm)=> {
+    vm.$http.post("admin/articletype/doAdd",state.cTypeInfo).then(response => {
+      if (response.body.success) {
+        notifyTool.successTips(vm,'成功',response.body.msg);
+        vm.$router.push({path:'/manager/articletype'});
+      } else {
+        notifyTool.errorTips(vm,'失败',response.body.msg);
+      }
+    },response => {
+      notifyTool.errorTips(vm,'添加失败','信息提交失败');
+    });
+  },
+  commitArticleTypeInfo: ({state,dispatch},vm)=> {
     if (!state.cTypeInfo.parentType) {
       notifyTool.normalTips(vm,'','请选择上层分类');
       return;
@@ -132,6 +152,15 @@ const actions = {
       }
     },response => {
       notifyTool.errorTips(vm,'修改失败','信息修改失败');
+    });
+  },
+  cleanCTypeInfo: ({commit})=> {
+    commit("SET_CTYPE_INFO",{
+      title:"",
+      parentType: '',
+      description: '',
+      state: '0',
+      lock: '0',
     });
   }
 };

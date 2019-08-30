@@ -10,7 +10,7 @@
             autosize
             placeholder="请输入标题"
             class="input_title"
-            v-model="title">
+            v-model="articleInfo.title">
           </el-input>
         </div>
       </div>
@@ -25,7 +25,7 @@
             autosize
             placeholder="请输入摘要"
             class="input_title"
-            v-model="description">
+            v-model="articleInfo.description">
           </el-input>
         </div>
       </div>
@@ -46,10 +46,10 @@
       <div class="top-input-con">
           <div class="top-row">
             <div class="row-label"><span style="color: red">*</span>类目:</div>
-            <el-select v-model="parentType" placeholder="请选择"
+            <el-select v-model="articleInfo.parentType" placeholder="请选择"
                        @change="getValue"
                        size="medium">
-              <template v-for="(item,index) in articletypes">
+              <template v-for="(item,index) in articleTypes">
                 <el-option
                   :label="item.title"
                   :value="item._id">
@@ -74,7 +74,7 @@
         <div style="display: flex; align-items: center;">
           <div style="width: 60px"><span style="color: red">*</span>标签:</div>
           <el-tag
-            v-for="tag in dynamicTags"
+            v-for="tag in articleInfo.tags"
             :key="tag"
             closable
             :disable-transitions="false"
@@ -92,7 +92,7 @@
             @blur="handleInputConfirm"
           >
           </el-input>
-          <el-button v-if="dynamicTags && dynamicTags.length < 5" class="button-new-tag" size="small" @click="showInput">+ 添加Tag
+          <el-button v-if="articleInfo.tags && articleInfo.tags.length < 5" class="button-new-tag" size="small" @click="showInput">+ 添加Tag
           </el-button>
           <el-button v-else class="button-new-tag" disabled size="small" @click="showInput">Tag最多5个</el-button>
         </div>
@@ -104,7 +104,7 @@
       </div>
     </div>
     <mavon-editor :toolbars="markdownOption"
-                  v-model="rawText"
+                  v-model="articleInfo.rawText"
                   codeStyle='androidstudio'
                   :style="mheight"
                   :ishljs = "true"
@@ -121,35 +121,19 @@
 <script>
   import HeadNavBar from '../../default/public/HeadNavBar.vue'
   import ArticelTagBar from '../../default/public/ArticelTagBar.vue'
-
-
   import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
-  import msgTool from '../../../module/msgTool.js'
-  import commonTool from '../../../module/commonTool.js'
 
+  import {mapGetters} from "vuex"
+  import {mapActions} from "vuex"
   export default {
     data() {
       return {
-        ARTICLE_TYPE_URL: Config.BASE_URL + 'admin/articletype',
-        EDIT_URL: Config.BASE_URL + 'admin/article/doEdit',
-        ARTICLE_URL: Config.BASE_URL + 'admin/article/getarticle',
-
         // 单个图片添加和删除--目前不能只能删除当下添加的图片
         // mavonEditor以前添加的图片 无法触发到删除方法
         POST_IMG_URL: Config.BASE_URL + "admin/article/postImg",
         DELETE_IMG_URL: Config.BASE_URL + "admin/article/deleteImg",
 
-
-        title: "123",
-        description: "",
-
-        keywords: [],
-        articletypes: [],
-        pid: "0",
-        parentType: "",
         //标签选择
-        dynamicTags: [],
         inputVisible: false,
         inputValue: "",
         disabled: 'disabled',
@@ -199,55 +183,34 @@
           subfield: true, // 单双栏模式
           preview: true, // 预览
         },
-
-        rawText: "#### ",
-        renderText: ""
       };
     }, components: {
       'v-headNavBar': HeadNavBar,
       'v-articleTagBar': ArticelTagBar
-    }, methods: {
-      doEdit:function (type) {
-
-        if (!this.title || this.title.trim().length == 0) {
-          msgTool.warnTips(this,"请填写标题");
-          return;
+    }, computed: {
+      ...mapGetters({
+        articleInfo: "editArticleInfo",
+        articleTypes: "articleTypes",
         }
-        if(!this.description || this.description.trim().length == 0) {
-          msgTool.warnTips(this,"请填写文章摘要");
-          return;
-        }
-
-        if(!this.parentType || this.parentType.trim().length == 0) {
-          msgTool.warnTips(this,"请选择文章分类");
-          return;
-        }
-
-        this.$http.post(this.EDIT_URL,{
-          id: this.$route.query.id,
-          pid: this.pid,
-          title: this.title,
-          state: type,
-          description: this.description,
-          keywords: this.keywords,
-          rawText: this.rawText,
-          renderText: this.renderText,
-          tags: this.dynamicTags
-        }).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            this.$router.push({path:'/manager/article'});
-          } else {
-            notifyTool.errorTips(this,'失败',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'修改失败','信息修改失败');
+      ),
+    },
+    methods: {
+      ...mapActions(
+        [
+          "submitEditArticle",
+          "getArticleTypes",
+          "getEditArticle"
+        ]
+      ),
+      doEdit:function (state) {
+        this.submitEditArticle({
+          state: state,
+          vm: this
         });
-
       },
 
       saveMavon(value, render) {
-        this.renderText = render;
+        this.articleInfo.renderText = render;
       },
       $imgAdd(pos, file) {
         const $vm = this.$refs.md;
@@ -270,12 +233,13 @@
 
         });
       }, getValue: function (value) {
-        this.pid = value;
+        this.articleInfo.pid = value;
       },
 
       //处理标签
       handleClose(tag) {
-        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+        let tags = this.articleInfo.tags;
+        tags.splice(tags.indexOf(tag), 1);
       },
 
       showInput() {
@@ -288,45 +252,17 @@
       handleInputConfirm() {
         let inputValue = this.inputValue;
         if (inputValue) {
-          this.dynamicTags.push(inputValue);
+          this.articleInfo.tags.push(inputValue);
         }
         this.inputVisible = false;
         this.inputValue = '';
-      },getArticleTypes:function () {
-        this.$http.get(this.ARTICLE_TYPE_URL).then(response => {
-          if (response.body.success) {
-            this.articletypes = response.body.articletypes;
-          }
-        },response => {
-
-        });
       },
-      getArticle:function() {
-        let that = this;
-        this.$http.get(this.ARTICLE_URL + '?id=' + this.$route.query.id).then(response => {
-          if (response.body.success) {
-            console.log('------');
-            console.log(response.body.article.title);
-            console.log(response.body.article);
-            that.title = response.body.article.title;
-            this.description = response.body.article.description;
-            this.dynamicTags = response.body.article.tags;
-            this.rawText = response.body.article.rawText;
-
-            this.pid = response.body.article.pid;
-            this.parentType = response.body.article.atname;
-          } else {
-            notifyTool.errorTips(this,'错误',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'错误','未获取到数据');
-
-        });
-      },
-
-    },mounted() {
-      this.getArticle();
+    },created() {
       this.getArticleTypes();
+      this.getEditArticle({
+        vm: this,
+        id: this.$route.query.id
+      });
     }
   }
 </script>

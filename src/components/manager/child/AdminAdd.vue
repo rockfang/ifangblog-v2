@@ -38,8 +38,6 @@
 </template>
 
 <script>
-  import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
   export default {
     data() {
       return {
@@ -47,47 +45,16 @@
         password: '',
         repwd: '',
         state: '0',
-        MANAGER_ADD_URL: Config.BASE_URL + 'admin/manager/doAdd',
-
       }
     },methods: {
-      doAdd:function () {
-        if (this.name.length < 3) {
-          notifyTool.normalTips(this,'','用户名须不小于3位');
-          return;
-        }
-
-        if (this.password.length < 3) {
-          notifyTool.normalTips(this,'','密码须不小于3位');
-          return;
-        }
-
-        if (this.password != this.repwd) {
-          notifyTool.normalTips(this,'','两次输入密码不一致');
-          return;
-        }
-
-        this.$http.post(this.MANAGER_ADD_URL,{
+      doAdd: function () {
+        this.$store.dispatch("addNewManager", {
           username: this.name,
           password: this.password,
           repwd: this.repwd,
-          state: this.state
-        }).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            this.clearForm();
-            this.$router.push({path:'/manager/admin'});
-          } else {
-            notifyTool.errorTips(this,'失败',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'添加失败','信息提交失败');
+          state: this.state,
+          vm: this
         });
-
-      },clearForm:function () {
-        this.name = '';
-        this.password = '';
-        this.repwd = '';
       }
     }
   }

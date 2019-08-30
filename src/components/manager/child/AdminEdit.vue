@@ -25,44 +25,21 @@
 </template>
 
 <script>
-  import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
   export default {
     data() {
       return {
         password: '',
         repwd: '',
-        MANAGER_Edit_URL: Config.BASE_URL + 'admin/manager/doEdit',
-
       }
     },methods: {
       doEdit:function () {
-        if (this.password.length < 3) {
-          notifyTool.normalTips(this,'','密码须不小于3位');
-          return;
-        }
-
-        if (this.password != this.repwd) {
-          notifyTool.normalTips(this,'','两次输入密码不一致');
-          return;
-        }
-
-        this.$http.post(this.MANAGER_Edit_URL,{
+        this.$store.dispatch("changePassword",{
           id: this.$route.query.id,
           username: this.$route.query.username,
           password: this.password,
           repwd: this.repwd,
-        }).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            this.$router.push({path:'/manager/admin'});
-          } else {
-            notifyTool.errorTips(this,'失败',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'修改失败','信息提交失败');
+          vm: this
         });
-
       }
     }
   }
