@@ -53,11 +53,6 @@
 </template>
 
 <script>
-  import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
-  import msgTool from '../../../module/msgTool.js'
-  import commonTool from '../../../module/commonTool.js'
-
   export default {
     data() {
       return {
@@ -65,35 +60,18 @@
         friendLink:'',
         author: '',
         state: '1',
-        sort:'',
-        ADD_URL: Config.BASE_URL + 'admin/link/doAdd',
+        sort:''
       }
     },methods: {
 
       submitUpload() {
-        if (!this.friendLink) {
-          notifyTool.normalTips(this,'','请填写链接地址');
-          return;
-        }
-        if (this.sort && !commonTool.checkNum(this.sort)) {
-          notifyTool.normalTips(this,'','请填写数字排序序号');
-          return;
-        }
-        this.$http.post(this.ADD_URL,{
+        this.$store.dispatch("submitNewLink",{
           name: this.name,
           link: this.friendLink,
           owner: this.author,
           state: this.state,
-          sort: this.sort
-        }).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            this.$router.push({path:'/manager/link'});
-          } else {
-            notifyTool.errorTips(this,'失败',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'添加失败','信息提交失败');
+          sort: this.sort,
+          vm: this
         });
       },
     },mounted() {

@@ -2,37 +2,37 @@ import Vue from "vue"
 import commonTool from '../../../module/commonTool.js'
 import notifyTool from '../../../module/notifyTool.js'
 const state = {
-  linkTableData: [],
+  navTableData: [],
 };
 const mutations = {
-  SET_Link_TABLE_DATA: (state,linkTableData)=> {
-    state.linkTableData = linkTableData;
+  SET_NAV_TABLE_DATA: (state,navTableData)=> {
+    state.navTableData = navTableData;
   }
 };
 
 const actions = {
-  initLinksData:({commit})=> {
-    Vue.http.get("admin/link").then(response => {
+  initNavData:({commit})=> {
+    Vue.http.get("admin/nav").then(response => {
       if (response.body.success) {
-        commit("SET_Link_TABLE_DATA",response.body.links);
+        commit("SET_NAV_TABLE_DATA",response.body.nav);
       }
     },response => {
 
     });
   },
-  changeLinkSort: ({commit},params)=> {
+  changeNavSort: ({commit},params)=> {
     Vue.http.post("admin/changeSort",params).then(response => {
       if (response.body.success) {
       }
     },response => {
     });
   },
-  changeLinkState: ({commit},params)=> {
+  changeNavState: ({commit},params)=> {
     let vm = params.vm;
     let row = params.row;
     Vue.http.post("admin/changeState",{
       id: row._id,
-      collectionName:'link',
+      collectionName:'nav',
       attr: 'state'
     }).then(response => {
       if (response.body.success) {
@@ -46,39 +46,44 @@ const actions = {
     },response => {
     });
   },
-  deleteLink: ({commit,dispatch},params)=> {
+  deleteNav: ({commit,dispatch},params)=> {
     let id = params.id;
     let vm = params.vm;
-    Vue.http.get('admin/link/delete?id='+ id).then(response => {
+    Vue.http.get('admin/nav/delete?id='+ id).then(response => {
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
-        dispatch("initLinksData");
+        dispatch("initNavData");
       } else {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
     },response => {
       notifyTool.errorTips(vm,'失败','删除失败');
     });
-  },submitNewLink: ({commit},params)=> {
+  },submitNewNav: ({commit},params)=> {
     let vm = params.vm;
-    if (!params.link) {
-      notifyTool.normalTips(vm,'','请填写链接地址');
+    if (!params.name) {
+      notifyTool.normalTips(vm,'','请填写导航名称');
+      return;
+    }
+
+    if (!params.route) {
+      notifyTool.normalTips(vm,'','路由不能为空');
       return;
     }
     if (params.sort && !commonTool.checkNum(params.sort)) {
       notifyTool.normalTips(vm,'','请填写数字排序序号');
       return;
     }
-    Vue.http.post("admin/link/doAdd",{
+    Vue.http.post("admin/nav/doAdd",{
       name: params.name,
-      link: params.link,
-      owner: params.owner,
+      route: params.route,
       state: params.state,
       sort: params.sort
     }).then(response => {
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
-        vm.$router.push({path:'/manager/link'});
+        vm.$router.push({path:'/manager/nav'});
+
       } else {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
@@ -89,8 +94,8 @@ const actions = {
 };
 
 const getters = {
-  linkTableData: (state)=> {
-    return state.linkTableData;
+  navTableData: (state)=> {
+    return state.navTableData;
   }
 };
 

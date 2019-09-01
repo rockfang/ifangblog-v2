@@ -53,9 +53,6 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button
-            size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -65,78 +62,47 @@
 </template>
 
 <script>
-  import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
+  import {mapActions} from "vuex"
+
   export default {
-    data() {
-      return {
-        NAV_URL: Config.BASE_URL + 'admin/nav',
-        CHANGE_STATE_URL: Config.BASE_URL + 'admin/changeState',
-        CHANGE_SORT_URL: Config.BASE_URL + 'admin/changeSort',
-        DELETE_URL: Config.BASE_URL + 'admin/nav/delete',
-        tableData: []
+    computed: {
+      tableData() {
+        return this.$store.getters.navTableData;
       }
     },
     methods: {
-      initData() {
-        this.$http.get(this.NAV_URL).then(response => {
-          if (response.body.success) {
-            this.tableData = response.body.nav;
-            console.log(this.tableData);
-          }
-        },response => {
-
-        });
-      },changeSort: function(event) {
-        this.$http.post(this.CHANGE_SORT_URL,{
+      ...mapActions([
+        "initNavData",
+        "changeNavSort",
+        "changeNavState",
+        "deleteNav",
+      ]),
+      changeSort: function(event) {
+        this.changeNavSort({
           id: event.target.id,
           sort: event.target.value,
           collectionName:'nav',
-        }).then(response => {
-          if (response.body.success) {
-          }
-        },response => {
         });
       },
       handleDelete(index, row) {
-        this.$http.get(this.DELETE_URL + '?id='+ row._id).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            this.initData();
-          } else {
-            notifyTool.errorTips(this,'失败',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'失败','删除失败');
+        this.deleteNav({
+          id: row._id,
+          vm: this,
         });
       }, tableRowClassName({row, rowIndex}) {
         if(this.tableData[rowIndex]) {
           if(this.tableData[rowIndex].state == '0') {
             return 'warning-row';
           } else {
-            //return 'success-row';
+            // return 'success-row';
           }
         }
         return '';
       },changeState: function (row) {
-        this.$http.post(this.CHANGE_STATE_URL,{
-          id: row._id,
-          collectionName:'nav',
-          attr: 'state'
-        }).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            if (row.state == '1') {
-              row.state = '0';
-            } else {
-              row.state = '1';
-            }
-          }
-        },response => {
-        });
+        this.changeNavState({row: row, vm: this});
       }
     },mounted() {
-      this.initData();
+      this.initNavData();
     }
   }
 </script>
