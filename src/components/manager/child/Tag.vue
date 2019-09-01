@@ -59,7 +59,7 @@
       <el-pagination
         small
         layout="prev, pager, next"
-        :hide-on-single-page="hideSinglePage"
+        :hide-on-single-page="Boolean(true)"
         @current-change="currentChange"
         :page-size="pageSize"
         :page-count="pageCount">
@@ -69,75 +69,46 @@
 </template>
 
 <script>
-  import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
-  import msgTool from '../../../module/msgTool.js'
+  import {mapGetters} from "vuex"
+  import {mapActions} from "vuex"
   export default {
-    data() {
-      return {
-        TAG_TYPE_URL: Config.BASE_URL + 'admin/tag',
-        CHANGE_STATE_URL: Config.BASE_URL + 'admin/changeState',
-        CHANGE_SORT_URL: Config.BASE_URL + 'admin/changeSort',
-        DELETE_URL: Config.BASE_URL + 'admin/tag/delete',
-        tableData: [], //
-
-        pageSize:5,//每页显示多少条前端固定
-        pageCount:0,
-        hideSinglePage: true,
-       }
+    computed: {
+      ...mapGetters({
+        tableData: "managerTagTableData",
+        pageCount: "managerTagPageCount",
+        pageSize: "managerTagPageSize",
+      }),
     },
     methods: {
+      ...mapActions(
+        [
+          "initManagerTagData",
+          "changeTagSort",
+          "deleteManagerTag",
+          "changeTagState",
+        ]
+      ),
       currentChange: function (page) {
         this.getPageTags(page);
       },getPageTags:function (page) {
-      //请求服务器，获取pageCount,pageSize
-      this.$http.get(this.TAG_TYPE_URL + "?pageSize=" + this.pageSize + "&page=" + page)
-        .then(response => {
-          if (response.body.success) {
-            this.tableData = response.body.tags;
-            this.pageCount = response.body.pageCount;
-            console.log("pageCount:" + response.body.pageCount);
-          }
-        },response => {
-
+        this.initManagerTagData({
+          pageSize: this.pageSize,
+          page: page,
         });
     },changeSort: function(event) {
-        this.$http.post(this.CHANGE_SORT_URL,{
+        this.changeTagSort({
           id: event.target.id,
           sort: event.target.value,
-          collectionName:'tag',
-        }).then(response => {
-          if (response.body.success) {
-          }
-        },response => {
         });
       },
       handleEdit(index, row) {
         this.$router.push({path:'/manager/tag/edit',query: { id: row._id}});
       },
       handleDelete(index, row) {
-
-        this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-
-          this.$http.get(this.DELETE_URL + '?id='+ row._id).then(response => {
-            if (response.body.success) {
-              msgTool.successTips(this,'删除成功!');
-              this.getPageTags(1);
-            } else {
-              msgTool.errorTips(this,response.body.msg);
-            }
-          },response => {
-            msgTool.errorTips(this,'删除失败');
-          });
-
-        }).catch(() => {
-          msgTool.normalTips(this,'已取消删除');
+        this.deleteManagerTag({
+          id: row._id,
+          vm: this
         });
-
       }, tableRowClassName({row, rowIndex}) {
         if(this.tableData[rowIndex]) {
           if(this.tableData[rowIndex].state == '0') {
@@ -148,20 +119,9 @@
         }
         return '';
       },changeState: function (row) {
-        this.$http.post(this.CHANGE_STATE_URL,{
-          id: row._id,
-          collectionName:'tag',
-          attr: 'state'
-        }).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            if (row.state == '1') {
-              row.state = '0';
-            } else {
-              row.state = '1';
-            }
-          }
-        },response => {
+        this.changeTagState({
+          row: row,
+          vm: this
         });
       }
     },mounted() {

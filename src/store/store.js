@@ -10,6 +10,7 @@ import article from "./modules/manager/article"
 import articleType from "./modules/manager/articleType"
 import link from "./modules/manager/link"
 import nav from "./modules/manager/nav"
+import tag from "./modules/manager/tag"
 export default new VueX.Store({
   modules:[
     home,
@@ -20,7 +21,8 @@ export default new VueX.Store({
     article,
     articleType,
     link,
-    nav
+    nav,
+    tag,
   ],
   state: {
   },
