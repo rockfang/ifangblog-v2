@@ -35,13 +35,10 @@
 
 <script>
 
-  import Config from '../../module/config.js'
-  import notifyTool from '../../module/notifyTool.js'
   export default {
     data: function () {
       return {
         username: localStorage.getItem('username') ? localStorage.getItem('username') : '',
-        LOGIN_OUT_URL: Config.BASE_URL + 'admin/login/loginOut',
       }
     },methods: {
       clickDropItem:function (index) {
@@ -49,16 +46,7 @@
           this.loginOut();
         }
       },loginOut: function () {
-        this.$http.get(this.LOGIN_OUT_URL).then(response => {
-          console.log(response.body);
-          if(response.body.success) {
-            notifyTool.normalTips(this,'退出成功','您已退出登录！');
-            localStorage.removeItem('username');
-            this.$router.push({ path: '/login'})
-          }
-        },response => {
-
-        });
+        this.$store.dispatch("loginOut",this);
       }
     }
   }

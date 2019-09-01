@@ -5,6 +5,7 @@ import home from "./modules/blog/home"
 import tagArticle from "./modules/blog/tagArticle"
 import tagWall from "./modules/blog/tagWall"
 import articleDetail from "./modules/blog/articleDetail"
+import login from "./modules/manager/login"
 import admin from "./modules/manager/admin"
 import article from "./modules/manager/article"
 import articleType from "./modules/manager/articleType"
@@ -17,6 +18,7 @@ export default new VueX.Store({
     tagArticle,
     tagWall,
     articleDetail,
+    login,
     admin,
     article,
     articleType,

@@ -10,6 +10,7 @@ import store from "./store/store"
 import VueResource from 'vue-resource'
 Vue.use(VueResource);
 Vue.http.options.withCredentials = true;//处理跨域session失效问题.含义是允许传跨域传cookie
+// Vue.http.options.root = "https://api.icaifun.com";
 Vue.http.options.root = "http://localhost:3005/";
 //mavonEditor使用
 import mavonEditor from 'mavon-editor'
@@ -33,7 +34,6 @@ import notifyTool from './module/notifyTool.js'
  * vue-resource拦截器
  */
 Vue.http.interceptors.push((request, next) => {
-  console.log('come in interceptors-------------------------');
   next((response) => {
     if(response.body.code == 1002) {
       notifyTool.errorTips2(vm,'请登录','未登录或登录失效,请登录');

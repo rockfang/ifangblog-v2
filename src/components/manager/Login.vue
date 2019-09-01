@@ -73,7 +73,7 @@
             this.$http.post(this.LOGIN_URL, {
               username: this.ruleForm.username,
               pass: this.ruleForm.pass,
-             }).then(response => {
+            }).then(response => {
               this.loading = false;
               console.log(response.body);
 
