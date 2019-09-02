@@ -6,6 +6,14 @@ const routes = [
   { path: '/login', component: resolve => require(['../components/manager/Login.vue'], resolve)},
   {
     path: '/manager',
+    beforeEnter: (routeTo, routeFrom, next)=> {
+      let username = localStorage.getItem("username");
+      if(!username) {
+        next({ path: '/login'});
+      } else {
+        next();
+      }
+    },
     component: resolve => require(['../components/manager/Manager.vue'], resolve),
     children:[
       { path: '/', component: resolve => require(['../components/manager/child/Board.vue'], resolve) },

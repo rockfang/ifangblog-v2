@@ -19,7 +19,8 @@ const state = {
     renderText: "",
     tags: [],
     parentType: "",
-  }
+  },
+  isNormalLeaveArticle: false//路由守卫判断用，正常提价不守卫
 };
 const mutations = {
   SET_MANAGER_ARTICLES: (state,articles)=> {
@@ -30,6 +31,9 @@ const mutations = {
   },
   SET_ARTICLE_INFO: (state,articleInfo)=> {
     state.articleInfo = articleInfo;
+  },
+  SET_NORMAL_LEAVE_ARTICLE: (state,isNormalLeaveArticle)=> {
+    state.isNormalLeaveArticle = isNormalLeaveArticle;
   }
 };
 
@@ -104,6 +108,7 @@ const actions = {
 
     Vue.http.post("admin/article/doAdd", articleInfo).then(response => {
       if (response.body.success) {
+        commit("SET_NORMAL_LEAVE_ARTICLE",true);
         notifyTool.successTips(vm, '成功', response.body.msg);
         vm.$router.push({path: '/manager/article'});
       } else {
@@ -176,6 +181,9 @@ const getters = {
   },
   editArticleInfo: (state)=> {
     return state.articleInfo
+  },
+  isNormalLeaveArticle: (state)=> {
+    return state.isNormalLeaveArticle
   }
 };
 

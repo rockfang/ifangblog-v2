@@ -121,7 +121,6 @@
 <script>
   import HeadNavBar from '../../default/public/HeadNavBar.vue'
   import ArticelTagBar from '../../default/public/ArticelTagBar.vue'
-  import Config from '../../../module/config.js'
 
   import {mapGetters} from "vuex"
   import {mapActions} from "vuex"
@@ -130,8 +129,8 @@
       return {
         // 单个图片添加和删除--目前不能只能删除当下添加的图片
         // mavonEditor以前添加的图片 无法触发到删除方法
-        POST_IMG_URL: Config.BASE_URL + "admin/article/postImg",
-        DELETE_IMG_URL: Config.BASE_URL + "admin/article/deleteImg",
+        POST_IMG_URL: "admin/article/postImg",
+        DELETE_IMG_URL: "admin/article/deleteImg",
 
         //标签选择
         inputVisible: false,

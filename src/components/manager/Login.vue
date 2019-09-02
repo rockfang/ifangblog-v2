@@ -22,7 +22,6 @@
 </template>
 
 <script>
-  import Config from '../../module/config.js'
   import notifyTool from '../../module/notifyTool.js'
   export default {
     data() {
@@ -48,8 +47,6 @@
       };
 
       return {
-        LOGIN_URL: Config.BASE_URL + 'admin/login/doLogin',
-        loading:false,
         ruleForm: {
           username: '',
           pass: '',
@@ -63,36 +60,21 @@
           ]
         }
       };
+    }, computed: {
+      loading() {
+        return this.$store.getters.loginLoading;
+      }
     },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            // POST /someUrl
-            this.loading = true;
-            this.$http.post(this.LOGIN_URL, {
+            this.$store.dispatch("sumitLogin",{
               username: this.ruleForm.username,
               pass: this.ruleForm.pass,
-            }).then(response => {
-              this.loading = false;
-              console.log(response.body);
-
-              if(response.body.success) {
-                notifyTool.successTips(this,'登录成功','恭喜您登录成功！');
-                localStorage.setItem('username',response.body.username);
-                this.$router.push({ path: '/manager'})
-              } else {
-                notifyTool.errorTips(this,'登录失败',response.body.msg);
-              }
-
-            }, response => {
-              this.loading = false;
-              console.log(response);
-              notifyTool.errorTips(this,'登录失败','很遗憾,登录失败');
-
+              vm: this
             });
           } else {
-            console.log('error submit!!');
             notifyTool.errorTips(this,'登录失败','请核对用户名及密码');
             return false;
           }

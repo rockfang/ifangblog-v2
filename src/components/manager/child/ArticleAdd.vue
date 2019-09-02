@@ -205,6 +205,9 @@
     }, computed: {
       articletypes() {
         return this.$store.getters.articleTypes;
+      },
+      isNormalLeaveArticle() {
+        return this.$store.getters.isNormalLeaveArticle;
       }
     },
 
@@ -269,6 +272,23 @@
 
     }, created() {
       this.$store.dispatch("getArticleTypes");
+    }, beforeRouteLeave(to,from,next) {
+      if(this.isNormalLeaveArticle) {
+        next(true);
+      } else if(this.articleInfo.title || this.articleInfo.title || this.articleInfo.description ||
+        this.articleInfo.rawText.length > 3 || this.articleInfo.tags.size > 0) {
+        this.$confirm('离开页面不会保存编辑中文章, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          next(true);
+        }).catch(() => {
+          next(false);
+        });
+      } else {
+        next(true);
+      }
     }
   }
 </script>

@@ -61,10 +61,7 @@
 </template>
 
 <script>
-  import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
   import msgTool from '../../../module/msgTool.js'
-  import commonTool from '../../../module/commonTool.js'
 
   export default {
     data() {
@@ -73,7 +70,6 @@
         typeName: '',
         state: '1',
         sort:'',
-        ADD_URL: Config.BASE_URL + 'admin/tag/doAdd',
       }
     },methods: {
 
@@ -84,33 +80,12 @@
         msgTool.warnTips(this,`当前限制选择 1 个文件，如需更换请先移除选择的文件`)
       },
       submitUpload() {
-        if (!this.typeName) {
-          notifyTool.normalTips(this,'','请填写标签名称');
-          return;
-        }
-
-        if (this.sort && !commonTool.checkNum(this.sort)) {
-          notifyTool.normalTips(this,'','请填写数字排序序号');
-          return;
-        }
-        let formData = new FormData();
-        console.log(this.fileList[0]);
-        formData.append('tagIcon',this.fileList[0]);
-        formData.append('typeName', this.typeName);
-        formData.append('state', this.state);
-        formData.append('sort', this.sort);
-        // specify Content-Type, with formData as well
-        this.$http.post(this.ADD_URL, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            this.$router.push({path:'/manager/tag'});
-          } else {
-            notifyTool.errorTips(this,'失败',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'添加失败','信息提交失败');
+        this.$store.dispatch("submitNewTagInfo",{
+          typeName: this.typeName,
+          state: this.state,
+          sort: this.sort,
+          tagIcon: this.fileList[0],
+          vm: this
         });
       },
       handleRemove() {
@@ -118,7 +93,6 @@
       },
       handlePreview(file) {
       }
-    },mounted() {
     }
   }
 </script>

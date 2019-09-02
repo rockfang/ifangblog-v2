@@ -68,35 +68,14 @@
 </template>
 
 <script>
-  import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
   import msgTool from '../../../module/msgTool.js'
-  import commonTool from '../../../module/commonTool.js'
 
-  export default {
-    data() {
-      return {
-        fileList:[],
-        // cTag:"",
-        // typeName: '',
-        // state: '1',
-        // sort:'',
-        // icon:"",
-        // CTAG_URL: Config.BASE_URL + 'admin/tag/getctag',
-        // Edit_URL: Config.BASE_URL + 'admin/tag/doEdit',
-      }
-    }, computed: {
+  export default {computed: {
       managerTagInfo() {
-        this.$store.getters.managerTagInfo;
+        return this.$store.getters.managerTagInfo;
       }
     },
     methods: {
-      init() {
-        this.$store.dispatch("getCurrentTagInfo",{
-          id: this.$route.query.id,
-          vm: this
-        });
-      },
       fileChange(file){
         this.managerTagInfo.fileList.push(file.raw);//上传文件变化时将文件对象push进files数组
       },
@@ -104,42 +83,21 @@
         msgTool.warnTips(this,`当前限制选择 1 个文件，如需更换请先移除选择的文件`)
       },
       submitUpload() {
-        this.$store.dispatch("submitTagInfo",{
+        this.$store.dispatch("submitEditTagInfo",{
           id: this.$route.query.id,
           vm: this
         });
-
-        if (this.sort && !commonTool.checkNum(this.sort)) {
-          notifyTool.normalTips(this,'','请填写数字排序序号');
-          return;
-        }
-        let formData = new FormData();
-        formData.append('id',this.$route.query.id);
-        formData.append('tagIcon',this.fileList[0]);
-        formData.append('typeName', this.typeName);
-        formData.append('state', this.state);
-        formData.append('sort', this.sort);
-        // specify Content-Type, with formData as well
-        this.$http.post(this.Edit_URL, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(response => {
-          if (response.body.success) {
-            notifyTool.successTips(this,'成功',response.body.msg);
-            this.$router.push({path:'/manager/tag'});
-          } else {
-            notifyTool.errorTips(this,'失败',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'添加失败','信息提交失败');
-        });
       },
       handleRemove() {
-        this.fileList.splice(0,1);
+        this.managerTagInfo.fileList.splice(0,1);
       },
       handlePreview(file) {
       }
-    },mounted() {
-      this.init();
+    },created() {
+      this.$store.dispatch("getCurrentTagInfo",{
+        id: this.$route.query.id,
+        vm: this
+      });
     }
   }
 </script>

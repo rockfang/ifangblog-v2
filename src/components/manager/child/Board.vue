@@ -5,14 +5,11 @@
 </template>
 
 <script>
-  import Config from '../../../module/config.js'
-  import notifyTool from '../../../module/notifyTool.js'
     export default {
         name: "Board",
 
       data: function () {
         return {
-          BOARD_URL: Config.BASE_URL + '/manager/board',
           loading: true
         }
       },methods: {
