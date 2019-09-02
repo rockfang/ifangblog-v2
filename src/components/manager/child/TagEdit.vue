@@ -3,7 +3,7 @@
     标签名称：
     <el-input
       type="text"
-      v-model="typeName"
+      v-model="managerTagInfo.typeName"
       maxlength="15"
       show-word-limit
       disabled
@@ -12,7 +12,7 @@
 
     <div class="state-row">
       　　　状态：
-      <el-select v-model="state" placeholder="请选择">
+      <el-select v-model="managerTagInfo.state" placeholder="请选择">
         <el-option
           key="0"
           label="待审核"
@@ -30,7 +30,7 @@
     　序号：
     <el-input
       type="text"
-      v-model="sort"
+      v-model="managerTagInfo.sort"
     >
     </el-input>
 
@@ -39,8 +39,8 @@
     </div>
 
     <div style="clear:both;height:0;line-height:0;font-sizing:0;"></div>
-    <div style="width: 100%;text-align: left;margin-left: 80px;padding: 10px" v-if="icon">
-      <img :src="'https://'+ icon" class="tag-icon">
+    <div style="width: 100%;text-align: left;margin-left: 80px;padding: 10px" v-if="managerTagInfo.icon">
+      <img :src="'https://'+ managerTagInfo.icon" class="tag-icon">
     </div>
 
     <div class="upload-row">
@@ -52,7 +52,7 @@
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :on-change="fileChange"
-        :file-list="fileList"
+        :file-list="managerTagInfo.fileList"
         :on-exceed="handleExceed"
         :limit="1"
         :auto-upload="false">
@@ -77,39 +77,38 @@
     data() {
       return {
         fileList:[],
-        cTag:"",
-        typeName: '',
-        state: '1',
-        sort:'',
-        icon:"",
-        CTAG_URL: Config.BASE_URL + 'admin/tag/getctag',
-        Edit_URL: Config.BASE_URL + 'admin/tag/doEdit',
+        // cTag:"",
+        // typeName: '',
+        // state: '1',
+        // sort:'',
+        // icon:"",
+        // CTAG_URL: Config.BASE_URL + 'admin/tag/getctag',
+        // Edit_URL: Config.BASE_URL + 'admin/tag/doEdit',
       }
-    },methods: {
+    }, computed: {
+      managerTagInfo() {
+        this.$store.getters.managerTagInfo;
+      }
+    },
+    methods: {
       init() {
-        this.$http.get(this.CTAG_URL + '?id=' + this.$route.query.id).then(response => {
-          if (response.body.success) {
-            console.log(response.body.ctag.icon);
-            this.cTag = response.body.ctag;
-            this.typeName = this.cTag.name;
-            this.state = this.cTag.state;
-            this.sort = this.cTag.sort;
-            this.icon = this.cTag.icon;
-          } else {
-            notifyTool.errorTips(this,'错误',response.body.msg);
-          }
-        },response => {
-          notifyTool.errorTips(this,'错误','未获取到数据');
-
+        this.$store.dispatch("getCurrentTagInfo",{
+          id: this.$route.query.id,
+          vm: this
         });
       },
       fileChange(file){
-        this.fileList.push(file.raw);//上传文件变化时将文件对象push进files数组
+        this.managerTagInfo.fileList.push(file.raw);//上传文件变化时将文件对象push进files数组
       },
       handleExceed(files, fileList) {
         msgTool.warnTips(this,`当前限制选择 1 个文件，如需更换请先移除选择的文件`)
       },
       submitUpload() {
+        this.$store.dispatch("submitTagInfo",{
+          id: this.$route.query.id,
+          vm: this
+        });
+
         if (this.sort && !commonTool.checkNum(this.sort)) {
           notifyTool.normalTips(this,'','请填写数字排序序号');
           return;
