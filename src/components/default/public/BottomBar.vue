@@ -13,7 +13,7 @@
         联系方式：cooldish1245@163.com
       </p>
       <p class="base-row" >
-        博客推荐：<a href="https://www.zhangbj.com" class="link">程序员技术之旅</a></p>
+        博客推荐：<a href="https://www.zhangbj.com" class="link" target="_blank">程序员技术之旅</a></p>
     </div>
 </template>
 
