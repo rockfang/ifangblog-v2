@@ -1,14 +1,12 @@
 /**
  * 配置路由并暴露出去，供main.js挂载
  */
-
+import Blog from "../components/default/Blog.vue"
 const routes = [
 
   {
     path: '/',
-    component: resolve => require.ensure(['../components/default/Blog.vue'],()=> {
-      resolve(require('../components/default/Blog.vue'));
-    }),
+    component: Blog,
     children:[
       { path: '/',
         component: resolve => require.ensure(['../components/default/child/Home.vue'],()=> {

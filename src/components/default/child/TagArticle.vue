@@ -15,7 +15,12 @@
           <div class="article-title">{{item.title}}</div>
           <div class="article-message markdown-body" v-html="item.description">
           </div>
-          <div class="article-readmore" @click="goArticle(item._id)"><a href="">查看更多...</a></div>
+          <!--<div class="article-readmore" @click="goArticle(item._id)"><a href="">查看更多...</a></div>-->
+
+          <router-link :to="'/article?id=' + item._id" tag="div" class="article-readmore">
+            <a href="">查看更多</a>
+            <img src="../../../assets/images/more.png" alt="">
+          </router-link>
         </div>
         <div v-if="!articles || articles.length == 0" class="empty-tips">本标签暂无文章</div>
 
@@ -156,11 +161,11 @@
         }
 
         .article-readmore {
-          display: inline-block;
+          display: flex;
+          align-items: center;
           width: 100%;
           margin-top: 15px;
           margin-left: 0;
-          color: #9E9E9E;
           font-weight: 400;
           font-size: 18px;
           font-style: italic;
@@ -168,6 +173,12 @@
           :hover {
             color: #4FC08D;
             border-color: #4FC08D;
+          }
+
+          img {
+            height: 38px;
+            margin: 2px 0 0 5px;
+            cursor: pointer;
           }
         }
 

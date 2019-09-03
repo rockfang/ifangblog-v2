@@ -10,10 +10,10 @@
           <div class="article-title">{{item.title}}</div>
           <div class="article-message" v-html="item.description">
           </div>
-          <div class="article-readmore" @click="goArticle(item._id)">
+          <router-link :to="'/article?id=' + item._id" tag="div" class="article-readmore">
             <a href="">查看更多</a>
             <img src="../../../assets/images/more.png" alt="">
-          </div>
+          </router-link>
           <v-articleTagBar :tags="item.tags"></v-articleTagBar>
         </div>
 

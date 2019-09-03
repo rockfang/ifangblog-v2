@@ -1,11 +1,11 @@
 <template>
     <div class="article-tag">
-      <div class="tag-item" v-for="tag in this.tags" @click="goTagArticle(tag.name)">
-        <a href="" class="a-tag">
-          <img :src="'https://' + tag.icon" alt="" v-if="tag.icon">
-          <img src="../../../assets/images/tag.png" alt="" v-else>
-          <span>{{tag.name}}</span>
-        </a>
+      <div class="tag-item" v-for="tag in this.tags" >
+        <router-link :to="'/tagarticle/' + tag.name" class="a-tag">
+            <img :src="'https://' + tag.icon" alt="" v-if="tag.icon">
+            <img src="../../../assets/images/tag.png" alt="" v-else>
+            <span>{{tag.name}}</span>
+        </router-link>
       </div>
     </div>
 </template>
