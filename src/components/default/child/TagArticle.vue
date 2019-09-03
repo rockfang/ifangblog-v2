@@ -58,10 +58,11 @@
   export default {
     data() {
       return {
-        pageSize: 2,//每页显示条数，前端固定
+        pageSize: 10,//每页显示条数，前端固定
         mainHeight: {
           'min-height': window.innerHeight - 265 + 'px'
         },
+        name: ""
       }
     }, computed: {
       ...mapGetters([

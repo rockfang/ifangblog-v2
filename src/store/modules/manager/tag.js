@@ -6,7 +6,7 @@ import msgTool from '../../../module/msgTool.js'
 const state = {
   managerTagTableData: [],
   managerTagPageCount: 0,
-  managerTagPageSize: 10,
+  managerTagPageSize: 12,
   //tag 编辑
   managerTagInfo: {
     fileList: [],

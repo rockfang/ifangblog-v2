@@ -47,6 +47,7 @@
     }, methods: {
       tagArticleList: function(name) {
         this.$router.push({path:'/tagarticle/' + name});
+
       },
       getRandomType: function () {
         let randomNum = Math.ceil(Math.random() * 4);
