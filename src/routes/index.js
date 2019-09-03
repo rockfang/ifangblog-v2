@@ -9,31 +9,32 @@ import Home from '../components/default/child/Home.vue'
 // import About from '../components/default/About.vue'
 // import ArticleDetail0 from '../components/default/ArticleDetail0.vue'
 const routes = [
-  //
-  // { path: '/', component: resolve => require(['../components/default/Home.vue'], resolve)},
-  //
-  // // { path: '/article', component: resolve => require(['../components/default/ArticleDetail.vue'], resolve)},
-  // { path: '/article', component: ArticleDetail},//处理详情页因为懒加载经常出现跳转无效
-  // // { path: '/article0', component: resolve => require(['../components/default/ArticleDetail0.vue'], resolve)},
-  // { path: '/tagwall', component: resolve => require(['../components/default/TagWall.vue'], resolve)},
-  // { path: '/tagarticle/:name', component: resolve => require(['../components/default/TagArticle.vue'], resolve)},
-  // { path: '/about', component: resolve => require(['../components/default/About.vue'], resolve)},
-
-
-
-  //嵌套路由
 
   {
     path: '/',
     component: resolve => require(['../components/default/Blog.vue'], resolve),
     children:[
-      { path: '/', component: Home},//处理详情页因为懒加载经常出现跳转无效
-      { path: '/article', component: ArticleDetail},//处理详情页因为懒加载经常出现跳转无效
+      { path: '/', component: resolve => require(['../components/default/child/Home.vue'], resolve)},//处理详情页因为懒加载经常出现跳转无效
+      { path: '/article', component: resolve => require(['../components/default/child/ArticleDetail.vue'], resolve)},//处理详情页因为懒加载经常出现跳转无效
       { path: '/tagwall', component: resolve => require(['../components/default/child/TagWall.vue'], resolve)},
       { path: '/tagarticle/:name', component: resolve => require(['../components/default/child/TagArticle.vue'], resolve)},
       { path: '/about', component: resolve => require(['../components/default/child/About.vue'], resolve)},
     ]
   },
+
+  //嵌套路由
+
+  // {
+  //   path: '/',
+  //   component: resolve => require(['../components/default/Blog.vue'], resolve),
+  //   children:[
+  //     { path: '/', component: Home},//处理详情页因为懒加载经常出现跳转无效
+  //     { path: '/article', component: ArticleDetail},//处理详情页因为懒加载经常出现跳转无效
+  //     { path: '/tagwall', component: resolve => require(['../components/default/child/TagWall.vue'], resolve)},
+  //     { path: '/tagarticle/:name', component: resolve => require(['../components/default/child/TagArticle.vue'], resolve)},
+  //     { path: '/about', component: resolve => require(['../components/default/child/About.vue'], resolve)},
+  //   ]
+  // },
 ];
 
 export default  routes;
