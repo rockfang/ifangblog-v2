@@ -16,17 +16,16 @@ const mutations = {
 const actions = {
 
   requestHomeArticles:({commit},pageInfo)=> {
+    commit("SET_LOADING",true);
     Vue.http.get("index?pageSize=" + pageInfo.pageSize + "&page=" + pageInfo.page)
       .then(response => {
         if (response.body.success) {
-          console.log('------------');
-          console.log(response.body.articles);
-
+          commit("SET_LOADING",false);
           commit("SET_HOME_ARTICLES",response.body.articles);
           commit("SET_HOME_PAGECOUNT",response.body.pageCount);
         }
       },response => {
-
+          commit("SET_LOADING",false);
       });
   },
 };

@@ -30,6 +30,9 @@ const router = new VueRouter(
 require("./module/element");
 
 import notifyTool from './module/notifyTool.js'
+
+
+
 /**
  * vue-resource拦截器
  */

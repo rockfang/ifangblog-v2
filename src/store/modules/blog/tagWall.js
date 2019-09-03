@@ -11,12 +11,14 @@ const mutations = {
 
 const actions = {
   initTagData:({commit})=> {
+    commit("SET_LOADING",true);
     Vue.http.get("index/tags").then(response => {
         if (response.body.success) {
+          commit("SET_LOADING",false);
           commit("SET_TAGS_WALL",response.body.tags);
         }
       },response => {
-
+          commit("SET_LOADING",false);
       });
   }
 };

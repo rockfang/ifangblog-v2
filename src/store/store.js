@@ -27,13 +27,19 @@ export default new VueX.Store({
     tag,
   ],
   state: {
+    loading: false
   },
   mutations: {
-
+    SET_LOADING: (state,loading)=> {
+      return state.loading = loading;
+    }
   },
   actions: {
+
   },
   getters: {
-
+    getLoading: (state)=> {
+      return state.loading;
+    }
   }
 });

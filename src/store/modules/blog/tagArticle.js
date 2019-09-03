@@ -31,19 +31,16 @@ const actions = {
     });
   },
   requestTagArticles:({commit},pageInfo)=> {
-
-    //请求服务器，获取pageCount
+    commit("SET_LOADING",true);
     Vue.http.get("index/tagarticle?pageSize=" + pageInfo.pageSize + "&page=" + pageInfo.page + "&tagName=" + pageInfo.tagName)
       .then(response => {
         if (response.body.success) {
-          console.log('------------');
-          console.log(response.body.articles);
-
           commit("SET_ARTICLES",response.body.articles);
           commit("SET_PAGECOUNT",response.body.pageCount);
+          commit("SET_LOADING",false);
         }
       },response => {
-
+          commit("SET_LOADING",false);
       });
   },
 };

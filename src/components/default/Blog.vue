@@ -2,7 +2,7 @@
   <div class="main">
     <HeadNavBar :path="this.$route.path"></HeadNavBar>
     <transition name="slide" mode="out-in">
-      <router-view></router-view>
+      <router-view v-loading="blogLoading"></router-view>
     </transition>
   </div>
 </template>
@@ -13,6 +13,10 @@
   export default {
     components: {
       HeadNavBar
+    },computed: {
+      blogLoading() {
+        return this.$store.getters.getLoading;
+      }
     }
   }
 </script>
