@@ -94,7 +94,7 @@
         ]
       ),
       getValue:function(value) {
-        this.pid = value;
+        this.$store.commit("SET_PID",value);
       },
       doAdd:function () {
         this.doAddType(this);

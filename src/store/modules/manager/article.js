@@ -5,7 +5,7 @@ import msgTool from '../../../module/msgTool.js'
 const state = {
   mangerArticles: [],
   managerArticlePageCount: 0,
-  pageSize: 12, //每页显示12条数据
+  pageSize: 11, //每页显示11条数据
 
   //编辑文章信息
   articleInfo: {

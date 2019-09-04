@@ -50,7 +50,6 @@
 <style lang="scss">
   [v-cloak] {
     display:none;
-
   }
 
   .content-detail {

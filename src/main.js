@@ -10,8 +10,8 @@ import store from "./store/store"
 import VueResource from 'vue-resource'
 Vue.use(VueResource);
 Vue.http.options.withCredentials = true;//处理跨域session失效问题.含义是允许传跨域传cookie
-// Vue.http.options.root = "https://api.icaifun.com";
-Vue.http.options.root = "http://localhost:3005/";
+Vue.http.options.root = "https://api.icaifun.com";
+// Vue.http.options.root = "http://localhost:3005/";
 //mavonEditor使用
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
@@ -23,17 +23,21 @@ const router = new VueRouter(
     routes: [
       ...index,
       ...admin
-    ]
+    ],
+
   }
 );
 //路由守卫，处理，路由切换后都滑动到顶部。 .main为router-view所在的外层div
 router.beforeEach((to, from, next) => {
-  if(to.path.indexOf("/article") > -1 || to.path.indexOf("/tagarticle") > -1) {
-    let main = document.querySelector(".main");
+    let main = document.querySelector(".main-blog");
+    let managerCon = document.querySelector(".out-con");
     if(main) {
       main.scrollTop = 0;
     }
-  }
+
+    if(managerCon) {
+      managerCon.scrollTop = 0;
+    }
   next()
 });
 

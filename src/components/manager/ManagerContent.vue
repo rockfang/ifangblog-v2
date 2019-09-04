@@ -129,6 +129,7 @@
 </template>
 
 <script>
+  import '../../assets/css/basic.scss';
   export default {
       data() {
         return {

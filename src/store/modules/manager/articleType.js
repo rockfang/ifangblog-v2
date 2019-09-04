@@ -12,6 +12,7 @@ const state = {
     description: '',
     state: '0',
     lock: '0',
+    pid: ''
   },
 };
 
@@ -22,6 +23,8 @@ const mutations = {
     state.pTypes = pTypes;
   },SET_CTYPE_INFO: (state,cTypeInfo)=> {
     state.cTypeInfo = cTypeInfo;
+  },SET_PID: (state,pid)=> {
+    state.cTypeInfo.pid = pid;
   }
 };
 
