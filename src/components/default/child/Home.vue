@@ -61,6 +61,12 @@
     }, methods: {
       currentChange: function (page) {
         this.requestArticleIndex(page);
+
+        //处理展示页切换时，滑动到顶部
+        let main = document.querySelector(".main");
+        if(main) {
+          main.scrollTop = 0;
+        }
       },
       requestArticleIndex: function (page) {
         this.$store.dispatch("requestHomeArticles", {
