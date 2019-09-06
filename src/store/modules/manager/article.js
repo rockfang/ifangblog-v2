@@ -145,26 +145,25 @@ const actions = {
       commit("SET_LOADING",false);
       notifyTool.errorTips(vm,'错误','未获取到数据');
     });
-  }, submitEditArticle: ({getters},params)=> {
+  }, submitEditArticle: ({commit},params)=> {
+    let articleInfo = params.articleInfo;
     let vm = params.vm;
-    getters.editArticleInfo.state = params.state;
-    getters.editArticleInfo.id = vm.$route.query.id;
 
-    if (!getters.editArticleInfo.title || getters.editArticleInfo.title.trim().length === 0) {
+    if (!articleInfo.title || articleInfo.title.trim().length === 0) {
       msgTool.warnTips(vm,"请填写标题");
       return;
     }
-    if(!getters.editArticleInfo.description || getters.editArticleInfo.description.trim().length === 0) {
+    if(!articleInfo.description || articleInfo.description.trim().length === 0) {
       msgTool.warnTips(vm,"请填写文章摘要");
       return;
     }
 
-    if(!getters.editArticleInfo.parentType || getters.editArticleInfo.parentType.trim().length === 0) {
+    if(!articleInfo.parentType || articleInfo.parentType.trim().length === 0) {
       msgTool.warnTips(vm,"请选择文章分类");
       return;
     }
     commit("SET_LOADING",true);
-    Vue.http.post("admin/article/doEdit",getters.editArticleInfo).then(response => {
+    Vue.http.post("admin/article/doEdit",articleInfo).then(response => {
       commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);

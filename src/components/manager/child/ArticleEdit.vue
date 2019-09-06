@@ -202,8 +202,10 @@
         ]
       ),
       doEdit:function (state) {
+        this.articleInfo.state = state;
+        this.articleInfo.id = this.$route.query.id;
         this.submitEditArticle({
-          state: state,
+          articleInfo: this.articleInfo,
           vm: this
         });
       },
