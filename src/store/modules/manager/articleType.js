@@ -29,14 +29,16 @@ const mutations = {
 };
 
 const actions = {
-  getArticleTypes: ({commit})=> {
-    Vue.http.get("admin/articletype").then(response => {
-      if (response.body.success) {
+getArticleTypes: ({commit})=> {
+  commit("SET_LOADING",true);
+  Vue.http.get("admin/articletype").then(response => {
+    commit("SET_LOADING",false);
+    if (response.body.success) {
         let articleTypes = response.body.articletypes;
         commit("SET_ARTICLETYPES",articleTypes);
       }
     },response => {
-
+      commit("SET_LOADING",false);
     });
   },
   changeArticleTypeState: ({commit},params)=> {
@@ -122,8 +124,9 @@ const actions = {
       notifyTool.normalTips(vm,'','请选择上层分类');
       return;
     }
-
+    commit("SET_LOADING",true);
     vm.$http.post("admin/articletype/doAdd",state.cTypeInfo).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
         vm.$router.push({path:'/manager/articletype'});
@@ -131,6 +134,7 @@ const actions = {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
     },response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm,'添加失败','信息提交失败');
     });
   },
@@ -139,7 +143,7 @@ const actions = {
       notifyTool.normalTips(vm,'','请选择上层分类');
       return;
     }
-
+    commit("SET_LOADING",true);
     Vue.http.post("admin/articletype/doEdit",{
       id: vm.$route.query.id,
       pid: state.cTypeInfo.parentType,
@@ -147,6 +151,7 @@ const actions = {
       description: state.cTypeInfo.description,
       lock: state.cTypeInfo.lock
     }).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
         vm.$router.push({path:'/manager/articletype'});
@@ -154,6 +159,7 @@ const actions = {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
     },response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm,'修改失败','信息修改失败');
     });
   },

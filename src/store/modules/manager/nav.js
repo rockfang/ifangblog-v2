@@ -12,12 +12,14 @@ const mutations = {
 
 const actions = {
   initNavData:({commit})=> {
+    commit("SET_LOADING",true);
     Vue.http.get("admin/nav").then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         commit("SET_NAV_TABLE_DATA",response.body.nav);
       }
     },response => {
-
+      commit("SET_LOADING",false);
     });
   },
   changeNavSort: ({commit},params)=> {
@@ -74,12 +76,14 @@ const actions = {
       notifyTool.normalTips(vm,'','请填写数字排序序号');
       return;
     }
+    commit("SET_LOADING",true);
     Vue.http.post("admin/nav/doAdd",{
       name: params.name,
       route: params.route,
       state: params.state,
       sort: params.sort
     }).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
         vm.$router.push({path:'/manager/nav'});
@@ -88,6 +92,7 @@ const actions = {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
     },response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm,'添加失败','信息提交失败');
     });
   }

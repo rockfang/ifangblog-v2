@@ -30,14 +30,16 @@ const mutations = {
 
 const actions = {
   initManagerTagData: ({commit}, params) => {
+    commit("SET_LOADING",true);
     Vue.http.get("admin/tag?pageSize=" + params.pageSize + "&page=" + params.page)
       .then(response => {
+        commit("SET_LOADING",false);
         if (response.body.success) {
           commit("SET_TAGS_TABLEDATA", response.body.tags);
           commit("SET_TAGS_PAGECOUNT", response.body.pageCount);
         }
       }, response => {
-
+        commit("SET_LOADING",false);
       });
   },
   changeTagSort: ({commit}, params) => {
@@ -102,7 +104,9 @@ const actions = {
   getCurrentTagInfo: ({commit}, params) => {
     let id = params.id;
     let vm = params.vm;
+    commit("SET_LOADING",true);
     Vue.http.get('admin/tag/getctag?id=' + id).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         let ctag = response.body.ctag;
         commit("SET_MANAGER_TAGINFO", {
@@ -116,8 +120,8 @@ const actions = {
         notifyTool.errorTips(vm, '错误', response.body.msg);
       }
     }, response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm, '错误', '未获取到数据');
-
     });
   },
   submitEditTagInfo: ({commit, getters, state}, params) => {
@@ -134,9 +138,11 @@ const actions = {
     formData.append('state', getters.managerTagInfo.state);
     formData.append('sort', getters.managerTagInfo.sort);
     // specify Content-Type, with formData as well
+    commit("SET_LOADING",true);
     Vue.http.post("admin/tag/doEdit", formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     }).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm, '成功', response.body.msg);
         vm.$router.push({path: '/manager/tag'});
@@ -144,6 +150,7 @@ const actions = {
         notifyTool.errorTips(vm, '失败', response.body.msg);
       }
     }, response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm, '添加失败', '信息提交失败');
     });
   },
@@ -165,9 +172,11 @@ const actions = {
     formData.append('state', params.state);
     formData.append('sort', params.sort);
     // specify Content-Type, with formData as well
+    commit("SET_LOADING",true);
     Vue.http.post("admin/tag/doAdd", formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     }).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
         vm.$router.push({path:'/manager/tag'});
@@ -175,6 +184,7 @@ const actions = {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
     },response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm,'添加失败','信息提交失败');
     });
   }

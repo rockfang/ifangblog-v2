@@ -39,14 +39,16 @@ const mutations = {
 
 const actions = {
   requestManagerArticles:({commit,state},page)=> {
+    commit("SET_LOADING",true);
     Vue.http.get("admin/article?pageSize=" + state.pageSize + "&page=" + page)
       .then(response => {
+        commit("SET_LOADING",false);
         if (response.body.success) {
           commit("SET_MANAGER_ARTICLES",response.body.articles);
           commit("SET_MANAGER_PAGE_COUNT",response.body.pageCount);
         }
       },response => {
-
+        commit("SET_LOADING",false);
       });
   },
   changeArticleState: ({commit}, params) => {
@@ -105,8 +107,10 @@ const actions = {
       msgTool.warnTips(vm, "请选择文章分类");
       return;
     }
+    commit("SET_LOADING",true);
 
     Vue.http.post("admin/article/doAdd", articleInfo).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         commit("SET_NORMAL_LEAVE_ARTICLE",true);
         notifyTool.successTips(vm, '成功', response.body.msg);
@@ -115,14 +119,17 @@ const actions = {
         notifyTool.errorTips(vm, '失败', response.body.msg);
       }
     }, response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm, '添加失败', '信息提交失败');
     });
   }, getEditArticle: ({commit},params)=> {
     let id = params.id;
     let vm = params.vm;
+    commit("SET_LOADING",true);
     Vue.http.get("admin/article/getarticle?id=" + id).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
-        commit("SET_ARTICLE_INFO",{
+        commit("SET_ARTICLE_INFO", {
           title: response.body.article.title,
           description: response.body.article.description,
           tags: response.body.article.tags,
@@ -132,9 +139,10 @@ const actions = {
           parentType: response.body.article.atname,
         });
       } else {
-        notifyTool.errorTips(vm,'错误',response.body.msg);
+        notifyTool.errorTips(vm, '错误', response.body.msg);
       }
     },response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm,'错误','未获取到数据');
     });
   }, submitEditArticle: ({getters},params)=> {
@@ -155,8 +163,9 @@ const actions = {
       msgTool.warnTips(vm,"请选择文章分类");
       return;
     }
-
+    commit("SET_LOADING",true);
     Vue.http.post("admin/article/doEdit",getters.editArticleInfo).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
         vm.$router.push({path:'/manager/article'});
@@ -164,6 +173,7 @@ const actions = {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
     },response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm,'修改失败','信息修改失败');
     });
   }

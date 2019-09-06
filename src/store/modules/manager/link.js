@@ -12,12 +12,14 @@ const mutations = {
 
 const actions = {
   initLinksData:({commit})=> {
+    commit("SET_LOADING",true);
     Vue.http.get("admin/link").then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         commit("SET_Link_TABLE_DATA",response.body.links);
       }
     },response => {
-
+      commit("SET_LOADING",false);
     });
   },
   changeLinkSort: ({commit},params)=> {
@@ -69,6 +71,7 @@ const actions = {
       notifyTool.normalTips(vm,'','请填写数字排序序号');
       return;
     }
+    commit("SET_LOADING",true);
     Vue.http.post("admin/link/doAdd",{
       name: params.name,
       link: params.link,
@@ -76,6 +79,7 @@ const actions = {
       state: params.state,
       sort: params.sort
     }).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
         vm.$router.push({path:'/manager/link'});
@@ -83,6 +87,7 @@ const actions = {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
     },response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(vm,'添加失败','信息提交失败');
     });
   }

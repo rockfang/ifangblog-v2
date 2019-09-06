@@ -12,19 +12,22 @@ const mutations = {
 
 const actions = {
   initTableManagers: ({commit}) => {
+    commit("SET_LOADING",true);
     Vue.http.get("admin/manager").then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         commit("SET_TABLE_MANAGERS", response.body.managers);
       }
     }, response => {
-
+      commit("SET_LOADING",false);
     });
+
   },
   deleteManager: ({dispatch, commit}, params) => {
     Vue.http.get("admin/manager/delete?id=" + params.row._id).then(response => {
       if (response.body.success) {
         notifyTool.successTips(params.vm, '成功', response.body.msg);
-        // dispatch("initTableManagers");
+        dispatch("initTableManagers");
       } else {
         notifyTool.errorTips(params.vm, '失败', response.body.msg);
       }
@@ -65,12 +68,14 @@ const actions = {
       notifyTool.normalTips(params.vm, '', '两次输入密码不一致');
       return;
     }
+    commit("SET_LOADING",true);
     Vue.http.post("admin/manager/doAdd", {
       username: params.username,
       password: params.password,
       repwd: params.repwd,
       state: params.state
     }).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(params.vm, '成功', response.body.msg);
         params.vm.$router.push({path: '/manager/admin'});
@@ -78,6 +83,7 @@ const actions = {
         notifyTool.errorTips(params.vm, '失败', response.body.msg);
       }
     }, response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(params.vm, '添加失败', '信息提交失败');
 
     });
@@ -93,13 +99,14 @@ const actions = {
       notifyTool.normalTips(params.vm, '', '两次输入密码不一致');
       return;
     }
-
+    commit("SET_LOADING",true);
     Vue.http.post("admin/manager/doEdit", {
       id: params.id,
       username: params.username,
       password: params.password,
       repwd: params.repwd,
     }).then(response => {
+      commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(params.vm, '成功', response.body.msg);
         params.vm.$router.push({path: '/manager/admin'});
@@ -107,6 +114,7 @@ const actions = {
         notifyTool.errorTips(params.vm, '失败', response.body.msg);
       }
     }, response => {
+      commit("SET_LOADING",false);
       notifyTool.errorTips(params.vm, '修改失败', '信息提交失败');
     });
   }

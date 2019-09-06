@@ -108,14 +108,10 @@
           </el-breadcrumb>
         </el-header>
 
-        <el-main  v-loading="loading"
-                 element-loading-text="Loading..."
-                 element-loading-spinner="el-icon-loading"
-                 element-loading-background="rgba(0, 0, 0, 0.8)">
+        <el-main  v-loading="loading">
 
           <transition name="fade" mode="out-in">
-            <router-view :showLoading="showLoading"
-                         :hideLoading="hideLoading">
+            <router-view>
             </router-view>
           </transition>
 
@@ -135,7 +131,6 @@
         return {
           isCollapse: false,
           breads:[],
-          loading:false
         };
       },
       created: function() {
@@ -148,15 +143,12 @@
           return {
             height: window.innerHeight - 60 + 'px'
           }
+        },
+        loading() {
+          return this.$store.getters.getLoading;
         }
       },
       methods: {
-        showLoading(){
-          this.loading = true;
-        },
-        hideLoading(){
-          this.loading = false;
-        },
         handleOpen(key, keyPath) {
           console.log(key, keyPath);
         },
