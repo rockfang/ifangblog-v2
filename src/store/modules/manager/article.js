@@ -146,6 +146,11 @@ const actions = {
       notifyTool.errorTips(vm,'错误','未获取到数据');
     });
   }, submitEditArticle: ({commit},params)=> {
+    let state = params.articleInfo.state;
+    //处理状态为2时是存草稿但不跳转
+    if(state == "2") {
+      params.articleInfo.state = "0";
+    }
     let articleInfo = params.articleInfo;
     let vm = params.vm;
 
@@ -167,7 +172,9 @@ const actions = {
       commit("SET_LOADING",false);
       if (response.body.success) {
         notifyTool.successTips(vm,'成功',response.body.msg);
-        vm.$router.push({path:'/manager/article'});
+        if(state != "2") {
+          vm.$router.push({path:'/manager/article'});
+        }
       } else {
         notifyTool.errorTips(vm,'失败',response.body.msg);
       }
