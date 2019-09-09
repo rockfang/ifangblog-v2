@@ -129,13 +129,11 @@
   .codecopy-btn{
     display: none;
     position: absolute;
-    right: 4px;
-    top: 0;
-    font-size: 12px;
+    right: 15px;
+    top: 5px;
+    font-size: 10px;
     color: white;
     background-color: transparent;
-    padding: 2px 8px;
-    margin: 8px;
     border-radius: 4px;
     cursor: pointer;
     /*box-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.05);*/
