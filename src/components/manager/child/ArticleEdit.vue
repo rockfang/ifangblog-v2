@@ -99,7 +99,8 @@
 
         <div class="operation">
           <el-button type="primary" size="mini" @click="doEdit('1')">发布</el-button>
-          <el-button type="warning" size="mini" class="draft" @click="doEdit('0')">草稿</el-button>
+          <el-button type="warning" size="mini" @click="doEdit('0')">草稿</el-button>
+          <el-button type="success" size="mini" @click="doEdit('2')">暂存</el-button>
         </div>
       </div>
     </div>
