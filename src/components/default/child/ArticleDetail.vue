@@ -43,6 +43,14 @@
           for (let i = 0; i < codecopys.length; i++) {
             //pre元素对象
             let codecopy = codecopys[i];
+
+
+            //代码类型显示 添加
+            let codeDom = codecopy.firstChild.firstChild;//找到标签为code的dom从而获取type
+            let codeTypeStr = codeDom.className.split('-')[1];
+            let code_type_temp = '<div class="codetype-btn">' + codeTypeStr + '</div>';
+            codecopy.innerHTML = codecopy.innerHTML + code_type_temp;
+
             //生成复制按钮
             let html_temp = '<div class="codecopy-btn" data-title="复制" data-clipboard-action="copy" data-clipboard-target="#code_' + i + '">复制</div>';
             codecopy.firstChild.id = 'code_' + i;//找到pre标签的第一个子元素（要复制代码所在元素）赋予id
@@ -60,11 +68,6 @@
                 copyDom.innerHTML = '复制';
               },1000);
             });
-            //代码类型显示 添加
-            let codeDom = codecopy.firstChild.firstChild;//找到标签为code的dom从而获取type
-            let codeTypeStr = codeDom.className.split('-')[1];
-            let code_type_temp = '<div class="codetype-btn">' + codeTypeStr + '</div>';
-            codecopy.innerHTML = codecopy.innerHTML + code_type_temp;
           }
           /*初始化复制功能*/
           const clipboardJs = new ClipboardJS('.codecopy-btn');
