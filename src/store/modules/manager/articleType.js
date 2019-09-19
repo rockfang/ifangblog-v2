@@ -115,7 +115,7 @@ getArticleTypes: ({commit})=> {
     });
 
   },
-  doAddType: ({state,dispatch},vm)=> {
+  doAddType: ({state,commit},vm)=> {
     if (!state.cTypeInfo.title) {
       notifyTool.normalTips(vm,'','请填写分类名称');
       return;
@@ -138,7 +138,7 @@ getArticleTypes: ({commit})=> {
       notifyTool.errorTips(vm,'添加失败','信息提交失败');
     });
   },
-  commitArticleTypeInfo: ({state,dispatch},vm)=> {
+  commitArticleTypeInfo: ({state,commit},vm)=> {
     if (!state.cTypeInfo.parentType) {
       notifyTool.normalTips(vm,'','请选择上层分类');
       return;
