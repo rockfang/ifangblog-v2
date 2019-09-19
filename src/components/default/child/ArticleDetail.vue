@@ -36,6 +36,7 @@
     },watch: {
       article: function () {
         this.$nextTick(()=>{
+
           /*生成复制按钮*/
           const codecopys = document.getElementsByTagName('pre');
           console.log(codecopys.length);
@@ -59,6 +60,11 @@
                 copyDom.innerHTML = '复制';
               },1000);
             });
+            //代码类型显示 添加
+            let codeDom = codecopy.firstChild.firstChild;//找到标签为code的dom从而获取type
+            let codeTypeStr = codeDom.className.split('-')[1];
+            let code_type_temp = '<div class="codetype-btn">' + codeTypeStr + '</div>';
+            codecopy.innerHTML = codecopy.innerHTML + code_type_temp;
           }
           /*初始化复制功能*/
           const clipboardJs = new ClipboardJS('.codecopy-btn');
@@ -68,6 +74,9 @@
           /*复制失败事件*/
           clipboardJs.on('error', function (e) {
           });
+
+
+
         })
       }
     },
@@ -123,6 +132,10 @@
     pre:hover .codecopy-btn{
       display: block;
     }
+
+    pre:hover .codetype-btn{
+      display: none;
+    }
   }
 
   /*复制按钮样式*/
@@ -133,6 +146,19 @@
     top: 5px;
     font-size: 10px;
     color: white;
+    background-color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    /*box-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.05);*/
+  }
+
+  /*code类型按钮样式*/
+  .codetype-btn{
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    font-size: 10px;
+    color: hsla(0,0%,100%,.4);
     background-color: transparent;
     border-radius: 4px;
     cursor: pointer;
