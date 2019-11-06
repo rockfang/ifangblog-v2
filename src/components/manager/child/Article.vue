@@ -1,5 +1,27 @@
 <template>
   <div>
+    <div class="filter-con">
+      <el-form :inline="true" :model="filterData" class="demo-form-inline" size="small">
+        <el-form-item >
+          <el-input size="small" v-model="filterData.keyword" placeholder="关键字"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button @click="onSubmit" type="primary" plain size="small">筛选</el-button>
+        </el-form-item>
+
+        <el-form-item style="margin-left: 30px">
+          <el-select size="small" v-model="filterData.tagName" placeholder="标签">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" plain size="small" @click="onSubmit">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
     <el-table
       :data="tableData"
       border
@@ -107,6 +129,14 @@
 
 <script>
   export default {
+    data:function() {
+      return {
+        filterData: {
+          keyword: '',
+          tagName: ''
+        }
+      }
+    },
     computed: {
       tableData: function () {
         return this.$store.getters.mangerArticles;
@@ -119,6 +149,9 @@
       }
     },
     methods: {
+      onSubmit() {
+        console.log('submit!');
+      },
       currentChange: function (page) {
         this.getPageArticles(page);
       },
@@ -152,12 +185,24 @@
   }
 </script>
 
-<style>
+<style scoped>
   .el-table .warning-row {
     background: oldlace;
   }
 
   .el-table .success-row {
     background: #f0f9eb;
+  }
+
+  .filter-con {
+    background: #ffffff;
+    border-radius: 2px;
+    padding: 10px 10px 0;
+    margin: 5px 0;
+  }
+
+
+  .el-form-item--small.el-form-item {
+    margin-bottom: 10px;
   }
 </style>
