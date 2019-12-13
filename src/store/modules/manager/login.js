@@ -22,8 +22,9 @@ const actions = {
     }).then(response => {
       commit("SET_LOGIN_LOADING",false);
       if(response.body.success) {
-        notifyTool.successTips(vm,'登录成功','恭喜您登录成功！');
+        notifyTool.successTips(vm,'登录成功','登录成功！');
         localStorage.setItem('username',response.body.username);
+        localStorage.setItem('role',response.body.role);
         vm.$router.push({ path: '/manager/article'})
       } else {
         notifyTool.errorTips(vm,'登录失败',response.body.msg);
