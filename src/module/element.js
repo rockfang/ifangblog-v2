@@ -4,8 +4,10 @@ import Vue from 'vue'
 import { Button, Select,Form,FormItem,Input,Icon,Dropdown,DropdownItem,DropdownMenu,Menu,Submenu,
   MenuItem,RadioGroup,RadioButton,MenuItemGroup ,
   Container,Aside,Header,Main,Footer,Breadcrumb,BreadcrumbItem,Col,Tooltip,
-  Table,TableColumn,Popover,Tag,Notification,Loading,Option,MessageBox,Message,Upload,Pagination,DatePicker
+  Table,TableColumn,Popover,Tag,Notification,Loading,Option,MessageBox,Message,Upload,Pagination,
+  DatePicker,Backtop
 } from 'element-ui';
+Vue.component(Backtop.name, Backtop);
 Vue.component(Button.name, Button);
 Vue.component(Select.name, Select);
 Vue.component(Form.name, Form);
