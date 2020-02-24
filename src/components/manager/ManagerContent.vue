@@ -18,14 +18,14 @@
               <span slot="title">控制台</span>
             </el-menu-item>
 
-            <el-submenu index="2">
+            <el-submenu index="2" :disabled="Boolean(hideManagers)">
               <template slot="title">
                 <i class="el-icon-s-custom"></i>
                 <span slot="title">管理员列表</span>
               </template>
-              <el-menu-item-group>
-                <el-menu-item index="/manager/admin">管理员列表</el-menu-item>
-                <el-menu-item index="/manager/admin/add">增加管理员</el-menu-item>
+              <el-menu-item-group >
+                <el-menu-item index="/manager/admin" :disabled="Boolean(hideManagers)">管理员列表</el-menu-item>
+                <el-menu-item index="/manager/admin/add" :disabled="Boolean(hideManagers)">增加管理员</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -130,10 +130,12 @@
       data() {
         return {
           isCollapse: false,
+          hideManagers: true,
           breads:[],
         };
       },
       created: function() {
+        this.hideManagers = localStorage.getItem('role') !== "root";
         //处理刷新面包屑显示问题
         this.handleMenuSelect(this.$route.path);
       },

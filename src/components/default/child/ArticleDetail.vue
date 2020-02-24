@@ -38,15 +38,15 @@
         this.$nextTick(()=>{
 
           /*生成复制按钮*/
-          const codecopys = document.getElementsByTagName('pre');
+          const codecopys = document.getElementsByClassName('hljs');
           console.log(codecopys.length);
           for (let i = 0; i < codecopys.length; i++) {
-            //pre元素对象
+            //hljs元素对象
             let codecopy = codecopys[i];
 
 
             //代码类型显示 添加
-            let codeDom = codecopy.firstChild.firstChild;//找到标签为code的dom从而获取type
+            let codeDom = codecopy.firstChild;//找到标签为code的dom从而获取type
             let codeTypeStr = codeDom.className.split('-')[1];
             let code_type_temp = '<div class="codetype-btn">' + codeTypeStr + '</div>';
             codecopy.innerHTML = codecopy.innerHTML + code_type_temp;

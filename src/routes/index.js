@@ -18,6 +18,11 @@ const routes = [
           resolve(require('../components/default/child/ArticleDetail.vue'));
         })
       },
+      { path: '/article0',
+        component: resolve => require.ensure(['../components/default/child/ArticleDetail.vue'],()=> {
+          resolve(require('../components/default/child/ArticleDetail0.vue'));
+        })
+      },
       { path: '/tagwall',
         component: resolve => require.ensure(['../components/default/child/TagWall.vue'],()=> {
           resolve(require('../components/default/child/TagWall.vue'));
