@@ -1,7 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
 module.exports = {
   entry: './src/main.js',
   output: {
@@ -90,7 +89,21 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
+    //反向代理配置 start
+    port: 8080,//本地项目的端口
+    host: 'localhost',//本地项目host
+    proxy: {
+	      '/api': {//匹配根路径
+	        target: 'https://api.icaifun.com',//跨域要访问的地址及端口
+	        changeOrigin: true,
+          secure: false,
+          pathRewrite:{
+            '^/api':'' //是否保接口中的'api'路由
+          }
+	      }
+    }
+    //反向代理配置 end
   },
   performance: {
     hints: false

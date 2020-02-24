@@ -72,7 +72,7 @@
       display: inline-block;
       text-align: left;
       width: 72%;
-      margin: 30px 45px;
+      margin: 30px auto;
       padding: 30px 45px;
       min-height: 600px;
       border-radius: 10px;

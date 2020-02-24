@@ -98,7 +98,7 @@
         display: block;
         /*min-height: 330px;*/
         background: white;
-        margin: 30px 0;
+        margin: 30px auto;
         padding: 30px 45px 0 45px;
         border-radius: 10px;
         font-size: 16px;

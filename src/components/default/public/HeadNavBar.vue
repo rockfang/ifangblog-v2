@@ -40,10 +40,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
-
-
   .site-header {
     display: flex;
     justify-content: space-between;
@@ -93,6 +89,20 @@
     a:hover {
       text-decoration: none;
       color: #212121;
+    }
+  }
+
+  @media screen and(max-width: 1024px) {
+    .site-header-brand {
+      display: none;
+    }
+    .site-header-right {
+      width: 100%;
+    }
+    .site-header-navigation {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
     }
   }
 </style>
