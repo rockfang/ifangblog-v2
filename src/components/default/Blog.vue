@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <template>
-      <el-backtop target=".main" :bottom="200" :visibility-height="10" :right="200">
+      <el-backtop target=".main" :bottom="20" :visibility-height="10" :right="20">
         <div class="back_up">UP</div>
       </el-backtop>
     </template>
