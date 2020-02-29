@@ -27,8 +27,6 @@ const mutations = {
     state.allTags = tags;
   },
   SET_MANAGER_ARTICLES: (state, articles) => {
-    console.log('SET_MANAGER_ARTICLES');
-    console.log(articles);
     state.mangerArticles = articles;
   },
   SET_MANAGER_PAGE_COUNT: (state, pageCount) => {

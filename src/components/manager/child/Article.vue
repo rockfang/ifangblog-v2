@@ -32,6 +32,7 @@
     <el-table
       :data="tableData"
       border
+      @cell-click="openDetailPage"
       style="width: 100%"
       :row-class-name="tableRowClassName"
       row-key="_id"
@@ -146,13 +147,23 @@ export default {
     }
   },
   methods: {
+    openDetailPage(row, column, event, cell) {
+      if (column.label !== '标题') {
+        return
+      }
+      let routeUrl = this.$router.resolve({
+        path: '/article',
+        query: { id: row._id }
+      })
+      window.open(routeUrl.href, '_blank')
+    },
     queryByTag() {
       this.dataType = 1
       this.$store.dispatch('manageTagArticles', {
-          page: 1,
-          tagName: this.tagValue,
-          vm:this
-        })
+        page: 1,
+        tagName: this.tagValue,
+        vm: this
+      })
     },
     queryByAtype() {
       this.dataType = 0
@@ -165,7 +176,7 @@ export default {
         this.$store.dispatch('manageTagArticles', {
           page: page,
           tagName: this.tagValue,
-          vm:this
+          vm: this
         })
       }
     },
