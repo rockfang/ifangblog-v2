@@ -129,8 +129,6 @@
 </template>
 
 <script>
-  import HeadNavBar from '../../default/public/HeadNavBar.vue'
-  import ArticelTagBar from '../../default/public/ArticelTagBar.vue'
   export default {
     data() {
       return {
@@ -209,11 +207,6 @@
       isNormalLeaveArticle() {
         return this.$store.getters.isNormalLeaveArticle;
       }
-    },
-
-    components: {
-      'v-headNavBar': HeadNavBar,
-      'v-articleTagBar': ArticelTagBar
     }, methods: {
       publish: function (state) {
         this.articleInfo.state = state;

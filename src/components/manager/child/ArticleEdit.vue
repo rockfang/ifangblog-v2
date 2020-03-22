@@ -120,9 +120,6 @@
 </template>
 
 <script>
-  import HeadNavBar from '../../default/public/HeadNavBar.vue'
-  import ArticelTagBar from '../../default/public/ArticelTagBar.vue'
-
   import {mapGetters} from "vuex"
   import {mapActions} from "vuex"
   export default {
@@ -184,10 +181,7 @@
           preview: true, // 预览
         },
       };
-    }, components: {
-      'v-headNavBar': HeadNavBar,
-      'v-articleTagBar': ArticelTagBar
-    }, computed: {
+    },computed: {
       ...mapGetters({
         articleInfo: "editArticleInfo",
         articleTypes: "articleTypes",

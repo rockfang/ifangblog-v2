@@ -33,6 +33,7 @@
       :data="tableData"
       border
       @cell-click="openDetailPage"
+      @cell-mouse-enter="showTips"
       style="width: 100%"
       :row-class-name="tableRowClassName"
       row-key="_id"
@@ -45,7 +46,9 @@
 
       <el-table-column label="标题" width="220" align="left">
         <template slot-scope="scope">
-          <span style="text-align: left">{{ scope.row.title }}</span>
+          <el-tooltip class="item" effect="dark" content="点击前往详情页" placement="top">
+            <span style="text-align: left">{{ scope.row.title }}</span>
+          </el-tooltip>
         </template>
       </el-table-column>
 
@@ -147,6 +150,11 @@ export default {
     }
   },
   methods: {
+    showTips(row, column, event, cell) {
+      if (column.label !== '标题') {
+        return
+      }
+    },
     openDetailPage(row, column, event, cell) {
       if (column.label !== '标题') {
         return

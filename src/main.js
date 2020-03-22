@@ -10,9 +10,10 @@ import store from "./store/store"
 import VueResource from 'vue-resource'
 Vue.use(VueResource);
 Vue.http.options.withCredentials = true;//处理跨域session失效问题.含义是允许传跨域传cookie
-Vue.http.options.root = "/api";
+// Vue.http.options.root = "/api";
 // Vue.http.options.root = "https://api.icaifun.com";
-// Vue.http.options.root = "http://localhost:3005/";
+Vue.http.options.root = "http://localhost:3005/";
+
 //mavonEditor使用
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
@@ -59,9 +60,12 @@ Vue.http.interceptors.push((request, next) => {
   });
 });
 
+// Before you create app
+Vue.config.devtools = true;
 let vm = new Vue({
   el: '#app',
   router,
   store,
   render: h => h(App)
 });
+
