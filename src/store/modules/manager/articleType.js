@@ -41,6 +41,18 @@ getArticleTypes: ({commit})=> {
       commit("SET_LOADING",false);
     });
   },
+  getRawArticleTypes: ({commit})=> {
+    commit("SET_LOADING",true);
+    Vue.http.get("admin/articletype/rawTypes").then(response => {
+      commit("SET_LOADING",false);
+      if (response.body.success) {
+          let articleTypes = response.body.articletypes;
+          commit("SET_ARTICLETYPES",articleTypes);
+        }
+      },response => {
+        commit("SET_LOADING",false);
+      });
+    },
   changeArticleTypeState: ({commit},params)=> {
     let row = params.row;
     let attr = params.attr;

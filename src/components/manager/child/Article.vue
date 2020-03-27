@@ -192,7 +192,7 @@ export default {
       this.$store.dispatch('requestManagerArticles', params)
     },
     getAtypes: function() {
-      this.$store.dispatch('getArticleTypes')
+      this.$store.dispatch('getRawArticleTypes')
     },
     getAllTags: function() {
       this.$store.dispatch('requestAllTags')

@@ -77,9 +77,6 @@
           /*复制失败事件*/
           clipboardJs.on('error', function (e) {
           });
-
-
-
         })
       }
     },
