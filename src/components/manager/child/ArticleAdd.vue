@@ -225,15 +225,12 @@
         this.$http.post(this.POST_IMG_URL, formData, {headers: {"Content-Type": "multipart/form-data"}}).then(function (response) {
           $vm.$img2Url(pos, response.data.remoteUrl);
         }, function (error) {
-          console.log(error);
         })
       }, $imgDel(rs) {
         let spliteArr = rs[0].split('/');
         let remoteName = spliteArr[spliteArr.length - 1];
-        console.log(remoteName);
         this.$http.get(this.DELETE_IMG_URL + "?remoteName=" + remoteName).then(response => {
           if (response.body.success) {
-            console.log(response.body.msg);
           }
         }, response => {
 

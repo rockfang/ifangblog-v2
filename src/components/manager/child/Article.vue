@@ -133,7 +133,6 @@ export default {
   },
   computed: {
     aTags: function() {
-      console.log(this.$store.getters.allTags)
       return this.$store.getters.allTags
     },
     atypes: function() {

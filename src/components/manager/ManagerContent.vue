@@ -152,10 +152,8 @@
       },
       methods: {
         handleOpen(key, keyPath) {
-          console.log(key, keyPath);
         },
         handleClose(key, keyPath) {
-          console.log(key, keyPath);
         },
         //面包屑显示
         handleMenuSelect(index,indexPath){

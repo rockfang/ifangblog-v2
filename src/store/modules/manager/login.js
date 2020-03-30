@@ -37,7 +37,6 @@ const actions = {
   },
   loginOut: ({commit},vm)=> {
     Vue.http.get("admin/login/loginOut").then(response => {
-      console.log(response.body);
       if(response.body.success) {
         notifyTool.normalTips(vm,'退出成功','您已退出登录！');
         localStorage.removeItem('username');
