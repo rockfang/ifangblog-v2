@@ -107,6 +107,28 @@ const actions = {
         }
       );
   },
+  manageIdArticle: ({ commit, state }, id) => {
+    if(!id) {
+      notifyTool.errorTips(params.vm, "id不能为空", "匹配失败");
+      return;
+    }
+    commit("SET_LOADING", true);
+    Vue.http.get("admin/article/filterarticle?id=" + id).then(
+      response => {
+        commit("SET_LOADING", false);
+        if (response.body.success) {
+          commit("SET_MANAGER_ARTICLES", response.body.article);
+          commit("SET_MANAGER_PAGE_COUNT", 1);
+        } else {
+          notifyTool.errorTips(vm, "错误", response.body.msg);
+        }
+      },
+      response => {
+        commit("SET_LOADING", false);
+        notifyTool.errorTips(vm, "错误", "未获取到数据");
+      }
+    );
+  },
   changeArticleState: ({ commit }, params) => {
     Vue.http
       .post("admin/changeState", {

@@ -124,7 +124,11 @@ const routes = [
         component: resolve =>
           require.ensure(["../components/manager/child/Article.vue"], () => {
             resolve(require("../components/manager/child/Article.vue"));
-          })
+          }),
+
+        meta: {
+          keepAlive: true,
+        }
       },
       {
         path: "article/add",

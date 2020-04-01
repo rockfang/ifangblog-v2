@@ -26,6 +26,18 @@
         <el-form-item>
           <el-button @click="queryByTag" type="primary" plain size="small">标签过滤</el-button>
         </el-form-item>
+
+        <el-form-item>
+          <el-input
+            autosize
+            placeholder="请输入id"
+            v-model="filterId"
+          ></el-input>
+        </el-form-item>
+        
+        <el-form-item>
+          <el-button @click="queryById" clearable type="primary" plain size="small">id过滤</el-button>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -126,109 +138,113 @@
 export default {
   data: function() {
     return {
-      atValue: '',
-      tagValue: '',
-      dataType: 0 // 0表示默认/分类数据列表，1表示tag数据列表
-    }
+      atValue: "",
+      tagValue: "",
+      dataType: 0, // 0表示默认/分类数据列表，1表示tag数据列表
+      filterId: '',
+    };
   },
   computed: {
     aTags: function() {
-      return this.$store.getters.allTags
+      return this.$store.getters.allTags;
     },
     atypes: function() {
-      return this.$store.getters.articleTypes
+      return this.$store.getters.articleTypes;
     },
     tableData: function() {
-      return this.$store.getters.mangerArticles
+      return this.$store.getters.mangerArticles;
     },
     pageCount: function() {
-      return this.$store.getters.managerArticlePageCount
+      return this.$store.getters.managerArticlePageCount;
     },
     pageSize: function() {
-      return this.$store.getters.managerArticlesPageSize
+      return this.$store.getters.managerArticlesPageSize;
     }
   },
   methods: {
     showTips(row, column, event, cell) {
-      if (column.label !== '标题') {
-        return
+      if (column.label !== "标题") {
+        return;
       }
     },
     openDetailPage(row, column, event, cell) {
-      if (column.label !== '标题') {
-        return
+      if (column.label !== "标题") {
+        return;
       }
       let routeUrl = this.$router.resolve({
-        path: '/article',
+        path: "/article",
         query: { id: row._id }
-      })
-      window.open(routeUrl.href, '_blank')
+      });
+      window.open(routeUrl.href, "_blank");
     },
     queryByTag() {
-      this.dataType = 1
-      this.$store.dispatch('manageTagArticles', {
+      this.dataType = 1;
+      this.$store.dispatch("manageTagArticles", {
         page: 1,
         tagName: this.tagValue,
         vm: this
-      })
+      });
     },
     queryByAtype() {
-      this.dataType = 0
-      this.getPageArticles({ page: 1, atname: this.atValue })
+      this.dataType = 0;
+      this.getPageArticles({ page: 1, atname: this.atValue });
+    },
+    queryById() {
+      this.$store.dispatch('manageIdArticle',this.filterId);
     },
     currentChange: function(page) {
       if (this.dataType == 0) {
-        this.getPageArticles({ page: page, atname: this.atValue })
+        this.getPageArticles({ page: page, atname: this.atValue });
       } else {
-        this.$store.dispatch('manageTagArticles', {
+        this.$store.dispatch("manageTagArticles", {
           page: page,
           tagName: this.tagValue,
           vm: this
-        })
+        });
       }
     },
     getPageArticles: function(params) {
-      this.$store.dispatch('requestManagerArticles', params)
+      this.$store.dispatch("requestManagerArticles", params);
     },
     getAtypes: function() {
-      this.$store.dispatch('getRawArticleTypes')
+      this.$store.dispatch("getRawArticleTypes");
     },
     getAllTags: function() {
-      this.$store.dispatch('requestAllTags')
+      this.$store.dispatch("requestAllTags");
     },
     handleEdit(index, row) {
       this.$router.push({
-        path: '/manager/article/edit',
+        path: "/manager/article/edit",
         query: { id: row._id }
-      })
+      });
     },
     handleDelete(index, row) {
-      this.$store.dispatch('deleteArticle', { id: row._id, vm: this })
+      this.$store.dispatch("deleteArticle", { id: row._id, vm: this });
     },
     tableRowClassName({ row, rowIndex }) {
       if (this.tableData[rowIndex]) {
-        if (this.tableData[rowIndex].state == '0') {
-          return 'warning-row'
+        if (this.tableData[rowIndex].state == "0") {
+          return "warning-row";
         } else {
           // return 'success-row';
         }
       }
-      return ''
+      return "";
     },
     changeState: function(row, field) {
-      this.$store.dispatch('changeArticleState', {
+      this.$store.dispatch("changeArticleState", {
         row: row,
         field: field,
         vm: this
-      })
+      });
     }
   },
   created() {
-    this.getPageArticles({ page: 1, atname: this.atValue })
-    this.getAtypes()
-    this.getAllTags()
+    this.getPageArticles({ page: 1, atname: this.atValue });
+    this.getAtypes();
+    this.getAllTags();
   }
-}
+};
 </script>
 
 <style scoped>

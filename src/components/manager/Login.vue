@@ -105,7 +105,10 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+body {
+  margin: 0 !important;
+}
   .loginpage {
     position: absolute;
     width: 100%;
