@@ -10,7 +10,8 @@ import VueResource from 'vue-resource'
 Vue.use(VueResource);
 Vue.http.options.withCredentials = true;//处理跨域session失效问题.含义是允许传跨域传cookie
 // Vue.http.options.root = "/api";
-Vue.http.options.root = "https://api3.icaifun.com";
+// Vue.http.options.root = "https://api3.icaifun.com";
+Vue.http.options.root = "https://admin.icaifun.com/api";
 // Vue.http.options.root = "http://localhost:3006/";
 
 //mavonEditor使用

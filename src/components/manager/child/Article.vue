@@ -32,11 +32,12 @@
             autosize
             placeholder="请输入id"
             v-model="filterId"
+            clearable
           ></el-input>
         </el-form-item>
         
         <el-form-item>
-          <el-button @click="queryById" clearable type="primary" plain size="small">id过滤</el-button>
+          <el-button @click="queryById" type="primary" plain size="small">id过滤</el-button>
         </el-form-item>
       </el-form>
     </div>
