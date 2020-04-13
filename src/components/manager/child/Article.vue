@@ -172,11 +172,8 @@ export default {
       if (column.label !== "标题") {
         return;
       }
-      let routeUrl = this.$router.resolve({
-        path: "/article",
-        query: { id: row._id }
-      });
-      window.open(routeUrl.href, "_blank");
+      let routeUrl = 'https://www.icaifun.com/article/' + row._id
+      window.open(routeUrl, "_blank");
     },
     queryByTag() {
       this.dataType = 1;
