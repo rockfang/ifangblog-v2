@@ -113,17 +113,15 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #909399 no-repeat 50%;
+    background: #909399;
     background-size: 100% 100%;
 
-
     .content {
-      width: 370px;
-      height: 210px;
+      width: 350px;
       position: absolute;
-      top: 20%;
-      left: 34%;
-      padding: 25px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
       border-radius: 5px;
       text-align: center;
 

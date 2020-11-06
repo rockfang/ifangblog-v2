@@ -2,6 +2,7 @@
  * 路由懒加载
  */
 
+/* eslint-disable */
 const routes = [
   {
     path: "/",

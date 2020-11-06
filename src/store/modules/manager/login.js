@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Vue from "vue"
 import notifyTool from '../../../module/notifyTool.js'
 
