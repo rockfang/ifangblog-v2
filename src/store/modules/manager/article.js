@@ -148,7 +148,7 @@ const actions = {
           }
         },
         response => {
-          notifyTool.errorTips(params.vm, "失败", "删除失败");
+          notifyTool.errorTips(params.vm, "失败", "状态修改异常");
         }
       );
   },
