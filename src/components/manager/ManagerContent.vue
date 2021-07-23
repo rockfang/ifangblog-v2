@@ -114,7 +114,7 @@
         </el-main>
         <el-footer height="40px">
           <a
-            href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action"
+            href="https://beian.miit.gov.cn"
             target="_blank"
           >蜀ICP备19016691号</a>
         </el-footer>
